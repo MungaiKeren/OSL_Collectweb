@@ -1,0 +1,22 @@
+.pdf {
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
+  position: relative;
+  border: 2px solid yellow;
+  .document {
+    background-color: red;
+    border: 2px solid green;
+    .page {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      background-color: beige;
+    }
+    .section {
+      margin: auto;
+      padding: 10;
+    }
+  }
+}

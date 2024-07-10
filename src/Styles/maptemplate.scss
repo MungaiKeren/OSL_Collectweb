@@ -1,0 +1,15 @@
+@import "./variables";
+@import "./mediaquery";
+
+.exportmap {
+  width: 100%;
+  height: 100%;
+  padding: 2em;
+
+  .viewer {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: $bg1;
+  }
+}

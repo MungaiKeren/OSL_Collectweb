@@ -1,0 +1,133 @@
+@import "./mediaquery";
+@import "./variables";
+
+.wrnfpComponent {
+  height: fit-content !important;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  margin-bottom: 2em;
+
+  .chart {
+    background-color: white;
+    height: 100%;
+    min-height: 250px;
+    width: 100%;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 1px 1px 5px #60606010;
+    padding: 1em;
+
+    .tp {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    h3 {
+      color: gray;
+      font-size: medium;
+      margin-bottom: 1em;
+      font-weight: 600;
+    }
+
+    .save {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      display: grid;
+      grid-template-columns: auto auto;
+      gap: 10px;
+
+      * {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .top {
+    display: grid;
+    padding: 1em;
+    background-color: $white;
+    border-radius: 8px;
+    box-shadow: 1px 1px 5px #60606010;
+
+    .title {
+      h3 {
+        color: $primary;
+        font-size: medium;
+        margin-bottom: 5px;
+        font-weight: 520;
+      }
+  
+      p {
+        color: gray;
+        font-size: small;
+        margin-bottom: 5px;
+      }
+    }
+
+    .midtop {
+      background-color: $white;
+      border-radius: 5px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2em;
+
+      .itmbox {
+        background: white;
+        border-radius: 5px;
+        box-shadow: 1px 1px 5px #60606010;
+        padding: 10px;
+
+        h4 {
+          color: $secondary;
+          align-self: center;
+          font-size: large;
+          text-align: center;
+          font-weight: 520;
+          margin: 1em 0 1em 0;
+        }
+
+        h3 {
+          color: $primary;
+          align-self: center;
+          font-weight: 500;
+          font-size: x-small;
+        }
+
+        h6 {
+          margin-top: 4px;
+          color: $primarylight;
+          align-self: center;
+          font-size: small;
+          font-weight: 400;
+        }
+
+        p {
+          margin-top: 4px;
+          color: $bg;
+          align-self: center;
+          font-size: x-small;
+          font-weight: 400;
+        }
+      }
+    }
+  }
+
+  @include maxwidth(mobile) {
+    .top {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .pies {
+      grid-template-columns: 1fr !important;
+    }
+
+    .bottom {
+      grid-template-columns: 1fr !important;
+    }
+
+    .middle {
+      grid-template-columns: 1fr !important;
+    }
+  }
+}

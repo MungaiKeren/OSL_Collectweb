@@ -1,0 +1,581 @@
+@import "./mediaquery";
+@import "./variables.scss";
+
+.reports {
+  height: 100%;
+  width: 100%;
+  padding: 1em;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+
+  .bars {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: fit-content; /* Standard property */
+    width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+
+    p {
+      background-color: white;
+      padding: 5px 10px;
+      color: $primary;
+      cursor: pointer;
+      font-size: small;
+    }
+    p:hover {
+      background-color: $primarylight;
+      color: white;
+    }
+    .active {
+      background-color: $primarylight;
+      color: white;
+    }
+  }
+
+  .top {
+    background-color: white;
+    border-radius: 5px;
+    padding: 1em;
+
+    h3 {
+      color: $primary;
+      font-size: small;
+      font-weight: 520;
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    hr {
+      color: #60606010;
+      margin: 5px 0 10px 0;
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 1fr auto auto auto;
+      gap: 10px;
+      padding: 5px;
+      border: 1px solid #60606010;
+      box-shadow: 1px 1px 5px #60606010;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      background-color: $bg1;
+
+      .fas {
+        color: $secondary;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      .fas:hover {
+        color: $primarylight;
+      }
+
+      .extent {
+        transform: rotate(45deg);
+      }
+
+      * {
+        font-size: small;
+        align-items: center;
+        display: flex;
+      }
+    }
+
+    .add {
+      display: grid;
+      grid-template-columns: 1fr auto 0.5fr auto;
+      gap: 10px;
+      width: 100%;
+      padding: 10px;
+      background-color: $bg1;
+      border-radius: 5px;
+      margin: 10px 0 10px 0;
+
+      .input-container,
+      .select-container {
+        margin-bottom: 0;
+      }
+
+      .btn {
+        height: 100%;
+        width: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: $primarylight;
+        padding: 0 2em !important;
+        margin: 0 !important;
+        color: white;
+      }
+      .btn:hover {
+        background-color: $primary;
+      }
+    }
+
+    .div3equal {
+      padding: 1em;
+    }
+
+    .div1auto {
+      .select-container {
+        select {
+          margin-bottom: 0 !important;
+        }
+        margin-bottom: 0 !important;
+      }
+      button {
+        height: 100%;
+        display: block;
+        padding: 0 1em;
+        border-radius: 5px;
+        cursor: pointer;
+        background-color: $primary;
+        color: white;
+        border: none;
+      }
+      button:hover {
+        background-color: $primarylight;
+      }
+    }
+  }
+
+  .list {
+    border-radius: 5px;
+    background-color: white;
+    margin-top: 1em;
+    overflow: hidden;
+
+    .div1auto {
+      background-color: $primarylight;
+      padding: 0 1em 0 1em;
+
+      h4 {
+        color: white;
+        font-size: small;
+        font-weight: 520;
+        display: flex;
+        align-items: center;
+      }
+      .download {
+        height: 16px;
+        width: 16px;
+        padding: 10px;
+        color: white;
+        margin: auto;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .download:hover {
+        color: $secondary;
+      }
+    }
+
+    .data {
+      background-color: white;
+      padding: 1em;
+      width: 100%;
+      min-height: 70vh;
+
+      .wrap {
+        overflow-x: auto;
+        padding-bottom: 2em;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th {
+          background-color: $primarylight;
+          color: white;
+          padding: 5px 10px;
+          border: 1px solid #ffffff30;
+          overflow-x: hidden;
+          font-weight: 520;
+        }
+        tr {
+          box-shadow: 1px 1px 2px #60606030;
+          margin-bottom: 2px;
+
+          td {
+            padding: 5px 10px;
+            border: 1px solid #60606030;
+            border-collapse: collapse;
+          }
+        }
+      }
+    }
+
+    @include maxwidth(tablet) {
+      .data {
+        width: 100% !important;
+        overflow-x: auto !important;
+
+        .item {
+          grid-template-columns: 25px 1.5fr 1fr 1fr 1fr 1fr 1fr;
+        }
+      }
+      .div1auto {
+        grid-template-columns: 1fr auto !important;
+      }
+    }
+    @include maxwidth(mobile) {
+      .data {
+        width: 100% !important;
+        overflow-x: auto !important;
+      }
+      .div1auto {
+        grid-template-columns: 1fr auto !important;
+      }
+    }
+  }
+
+  .popup {
+    background-color: rgba($color: #000000, $alpha: 0.1);
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+
+    .container {
+      background-color: white;
+      border-radius: 5px;
+      overflow-x: hidden;
+      max-width: 70vw;
+      width: 100%;
+      margin: auto;
+      max-height: 90vh;
+      overflow-y: auto;
+
+      .div1auto {
+        background-color: $primarylight;
+        padding: 10px 1em 10px 1em;
+
+        h4 {
+          color: white;
+          font-size: small;
+          font-weight: 520;
+          display: flex;
+          align-items: center;
+        }
+        .download {
+          height: 16px;
+          width: 16px;
+          padding: 10px;
+          color: white;
+          margin: auto;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+        .download:hover {
+          color: $secondary;
+        }
+      }
+
+      .data {
+        min-height: 30vh;
+        padding: 1em 0 1em 1em;
+
+        .div2equal {
+          gap: 0 !important;
+        }
+
+        .ditem {
+          display: grid;
+          grid-template-columns: 1fr 2fr;
+          margin-right: 1em;
+        }
+
+        p {
+          font-weight: 400;
+          font-size: small;
+          padding: 4px;
+          border: 1px solid #60606010;
+        }
+
+        h4 {
+          font-weight: 500;
+          font-size: small;
+          padding: 4px;
+          color: $primarylight;
+          background-color: $bg1;
+          border: 1px solid #60606010;
+        }
+      }
+
+      button {
+        background-color: $primarylight;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        display: block;
+        margin: 0 1em 10px auto;
+      }
+      button:hover {
+        background-color: $primary;
+      }
+    }
+
+    @include maxwidth(tablet) {
+      .container {
+        max-width: 95vw !important;
+        width: 100%;
+      }
+    }
+  }
+
+  .table {
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px #60606030;
+    margin-bottom: 1em;
+    width: 100%;
+    overflow-x: auto;
+    h1 {
+      color: $primary;
+      font-size: medium;
+      font-weight: 560;
+      display: flex;
+      align-items: center;
+    }
+
+    .filters {
+      width: fit-content; /* Standard property */
+      width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+      display: grid;
+      grid-template-columns: repeat(3, auto);
+      gap: 10px;
+      margin-left: auto;
+
+      .download {
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+        padding: 5px;
+        color: $primarylight;
+        display: flex;
+        align-items: center;
+        background-color: $bg1;
+        border-radius: 5px;
+      }
+      .download:hover {
+        color: $primary;
+      }
+    }
+    .filter {
+      display: grid;
+      grid-template-columns: repeat(4, auto);
+      width: fit-content; /* Standard property */
+      width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+      gap: 1em;
+      margin: 10px 0 10px auto;
+
+      .download {
+        height: 16px;
+        width: 16px;
+        cursor: pointer;
+        padding: 5px;
+        color: $primarylight;
+        display: flex;
+        align-items: center;
+        background-color: $bg1;
+        border-radius: 5px;
+      }
+      .download:hover {
+        color: $primary;
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      .viewer {
+        width: 100%;
+      }
+
+      td,
+      th {
+        border: 1px solid black;
+        padding: 5px;
+      }
+
+      thead {
+        background-color: $primarylight;
+        width: 100%;
+        th {
+          font-weight: 520;
+          color: white;
+          font-size: small;
+
+          text-align: left;
+        }
+      }
+
+      .cc {
+        text-align: center;
+      }
+
+      td {
+        font-size: small;
+      }
+    }
+  }
+
+  .charts {
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px #60606030;
+    margin-bottom: 1em;
+
+    h1 {
+      color: $primary;
+      font-size: medium;
+      font-weight: 560;
+      display: flex;
+      align-items: center;
+    }
+
+    .select {
+      height: fit-content;
+      width: fit-content; /* Standard property */
+      width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+      margin-left: auto;
+      color: $primarylight;
+      background-color: $bg1;
+      border-radius: 5px;
+      box-shadow: 1px 1px 5px #60606030;
+
+      select {
+        border: none;
+        color: $primarylight;
+      }
+
+      select:focus {
+        border-bottom: none !important;
+      }
+    }
+
+    .filter {
+      display: grid;
+      grid-template-columns: repeat(8, auto);
+      width: fit-content; /* Standard property */
+      width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+      gap: 1em;
+      margin: 10px 0 10px auto;
+
+      button {
+        height: fit-content;
+        background-color: $bg1;
+        color: $primarylight;
+        padding: 5px;
+        cursor: pointer;
+        display: block;
+        margin: auto;
+        border: none;
+        border-radius: 5px;
+        box-shadow: 1px 1px 5px #60606030;
+      }
+
+      button:hover {
+        background-color: $primarylight;
+        color: white;
+      }
+
+      .active {
+        background-color: $primarylight;
+        color: white;
+      }
+
+      label {
+        color: $primary;
+        margin-bottom: 5px;
+        font-size: small;
+      }
+
+      input {
+        padding: 8px;
+        background-color: $primarylighter;
+        border-radius: 5px;
+        border: 1px solid $primarylight;
+        color: white;
+        outline: none;
+        cursor: pointer;
+      }
+    }
+
+    .chart {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      background-color: $white;
+      border-radius: 8px;
+      box-shadow: 1px 1px 5px #60606030;
+      padding: 1em;
+      margin-bottom: 1em;
+
+      .tp {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px !important;
+
+        .download {
+          height: 16px;
+          width: 16px;
+          color: $secondary;
+          cursor: pointer;
+        }
+
+        .download:hover {
+          color: $primarylight;
+        }
+
+        h3 {
+          color: $primary;
+          font-size: small;
+          font-weight: 520;
+          margin-bottom: 0;
+        }
+
+        p {
+          color: gray;
+          font-size: small;
+        }
+
+        hr {
+          color: #60606010;
+          margin-bottom: 10px;
+        }
+      }
+
+      h3 {
+        color: gray;
+        font-size: medium;
+        margin-bottom: 1em;
+        font-weight: 600;
+      }
+
+      .save {
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        display: grid;
+        grid-template-columns: auto auto;
+        gap: 10px;
+
+        * {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

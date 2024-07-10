@@ -1,0 +1,363 @@
+@import "./mediaquery";
+@import "./variables";
+
+.indicators {
+  height: 100%;
+  width: 100%;
+  padding: 1em;
+  overflow: auto;
+
+  .filter {
+    display: grid;
+    grid-template-columns: repeat(8, auto);
+    width: fit-content; /* Standard property */
+    width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+    gap: 1em;
+    margin: 10px 0 10px auto;
+
+    button {
+      height: fit-content;
+      background-color: $bg1;
+      color: $primarylight;
+      padding: 5px;
+      cursor: pointer;
+      display: block;
+      margin: auto;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 1px 1px 5px #60606030;
+    }
+
+    button:hover {
+      background-color: $primarylight;
+      color: white;
+    }
+
+    .active {
+      background-color: $primarylight;
+      color: white;
+    }
+
+    label {
+      color: $primary;
+      margin-bottom: 5px;
+      font-size: small;
+    }
+
+    input {
+      padding: 8px;
+      background-color: $primarylighter;
+      border-radius: 5px;
+      border: 1px solid $primarylight;
+      color: white;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+
+  .title {
+    h3 {
+      color: $primary;
+      font-size: medium;
+      margin-bottom: 5px;
+      font-weight: 520;
+    }
+
+    p {
+      color: gray;
+      font-size: small;
+      margin-bottom: 5px;
+    }
+
+    hr {
+      color: #60606010;
+      margin-bottom: 10px;
+    }
+  }
+
+  .top {
+    background-color: white;
+    padding: 1em;
+    border-radius: 5px;
+    position: relative;
+
+    .top-cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1em;
+      margin-top: 1em;
+
+      .tp_item {
+        background-color: white;
+        border-radius: 5px;
+        padding: 8px;
+        box-shadow: 1px 1px 5px #60606010;
+
+        img {
+          width: 24px;
+          height: 24px;
+          object-fit: contain;
+        }
+
+        h4 {
+          color: $secondary;
+          align-self: center;
+          font-size: medium;
+          text-align: center;
+          font-weight: 520;
+          margin: 1em 0 1em 0;
+        }
+
+        h3 {
+          color: $primary;
+          align-self: center;
+          font-weight: 520;
+          font-size: small;
+        }
+
+        h6 {
+          margin-top: 4px;
+          color: $primary;
+          align-self: center;
+          font-size: x-small;
+          font-weight: 400;
+        }
+
+        .p {
+          margin-left: auto;
+          margin-top: 1em;
+          color: $primarylight;
+          font-size: large;
+          display: block;
+        }
+      }
+
+      .itm {
+        background: white;
+        padding: 10px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 5px #60606010;
+
+        span {
+          color: $primary;
+          font-size: smaller;
+          font-family: inter;
+          font-weight: 300;
+        }
+
+        .ft {
+          display: grid;
+          grid-template-columns: auto auto;
+          justify-content: space-between;
+          align-items: baseline;
+
+          .more {
+            color: $white;
+            padding: 5px 5px 5px;
+            background: $primary;
+            border-radius: 5px;
+
+            i {
+              color: white;
+            }
+          }
+        }
+      }
+
+      @include maxwidth(tablet) {
+        grid-template-columns: repeat(2, 1fr);
+
+        .tp_item {
+          min-width: 100%;
+          scroll-snap-align: start;
+        }
+      }
+
+      @include maxwidth(mobile) {
+        display: flex;
+        overflow-x: scroll;
+        white-space: nowrap;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+
+        scrollbar-width: thin;
+        scrollbar-color: $primary $secondary;
+        -webkit-scrollbar-width: thin;
+        -webkit-scrollbar-color: $primary $secondary;
+
+        .tp_item {
+          min-width: 100%;
+          scroll-snap-align: start;
+        }
+      }
+    }
+  }
+
+  .indicator_section {
+    padding: 1em;
+    background-color: white;
+    margin-top: 2em;
+    box-shadow: 1px 1px 5px #60606010;
+    border-radius: 5px;
+    position: relative;
+
+    .loading {
+      position: absolute !important;
+    }
+
+    .sbody {
+      display: grid;
+      gap: 10px;
+      padding: 5px;
+      margin-bottom: 10px;
+      box-shadow: 1px 1px 5px #60606010;
+      border: 1px solid #60606010;
+
+      h3 {
+        font-weight: 520;
+        font-size: small;
+        padding: 5px;
+      }
+
+      :nth-child(3),
+      :nth-child(4),
+      :nth-child(5) {
+        margin: auto;
+      }
+    }
+
+    .ind_list {
+      min-height: 20vh;
+
+      .tbody {
+        background: white;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-shadow: 1px 1px 5px #60606010;
+        cursor: pointer;
+        display: grid;
+        gap: 10px;
+
+        .ic {
+          margin-left: 5px;
+          font-size: large;
+        }
+
+        h4 {
+          font-weight: 400;
+          border-left: 1px solid #60606010;
+          border-right: 1px solid #60606010;
+          font-size: small;
+          color: gray;
+          display: block;
+          margin: auto;
+          text-align: center;
+        }
+
+        h5 {
+          font-weight: 400;
+          text-align: center !important;
+          font-size: small;
+          color: white;
+          background-color: $primarylighter;
+          padding: 10px;
+          border-radius: 44px;
+          width: 100%;
+          height: fit-content;
+        }
+
+        .achievement {
+          width: fit-content; /* Standard property */
+          width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+          margin: auto 0 auto auto;
+          color: $primary;
+        }
+
+        label {
+          border: 1px solid $secondary;
+          padding: 8px;
+          font-size: small;
+          width: fit-content; /* Standard property */
+          width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+          border-radius: 5px;
+        }
+
+        p {
+          font-size: small;
+          margin: auto;
+          width: 100%;
+        }
+
+        .left {
+          display: grid;
+          grid-template-columns: 0.3fr 1fr;
+          gap: 1em;
+
+          .ind-code {
+
+            border: 1px solid $secondary;
+            color: $secondary;
+            padding: 6px;
+            border-radius: 5px;
+          }
+
+          .ind-desc {
+            color: $accent;
+            border-right: 1px solid $accent;
+          }
+
+          p {
+            text-wrap: balance;
+          }
+        }
+
+        .right {
+          display: grid;
+          grid-template-columns: repeat(7, 1fr);
+          gap: 1em;
+
+          p {
+            cursor: pointer;
+            color: $accent;
+          }
+
+          .badge {
+            border-right: 1px solid $accent;
+            border-left: 1px solid $accent;
+            padding: 7px;
+            width: 85px;
+
+            p {
+              background: $primarylighter;
+              color: $secondary;
+              text-align: center;
+              padding: 2px;
+              border-radius: 15px;
+            }
+          }
+
+          .q4 {
+            border-right: 1px solid $accent;
+            padding: 7px;
+            margin-left: -7px;
+          }
+
+          .achievement {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+      }
+    }
+  }
+
+  @include maxwidth(mobile) {
+    .filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0;
+    }
+  }
+}

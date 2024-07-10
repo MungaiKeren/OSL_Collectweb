@@ -1,0 +1,492 @@
+@import "./mediaquery";
+@import "./variables";
+
+.components {
+  height: 100%;
+  overflow-y: auto;
+  width: 100%;
+  padding: 1em;
+  position: relative;
+
+  .list {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1em;
+    min-height: 100%;
+    height: fit-content;
+
+    .dtitle {
+      display: flex;
+      margin: 10px 0 10px 0;
+
+      .search {
+        margin: 0 0 0 auto;
+        border-radius: 3px;
+        display: grid;
+        grid-template-columns: repeat(2, auto);
+        align-items: center;
+        border: gray solid 1px;
+
+        .inputs {
+          display: grid;
+          grid-template-columns: 1fr 1fr 1fr;
+          gap: 2px;
+          align-items: baseline;
+
+          .pwd {
+            margin: 3px;
+          }
+
+          input {
+            margin-right: 5px;
+            padding: 0;
+            border-top: none;
+            border-right: none;
+            border-left: none;
+            outline: none;
+          }
+
+          select {
+            background-color: white;
+            padding: 0;
+            border-top: none;
+            border-right: none;
+            border-left: none;
+            outline: none;
+          }
+        }
+
+        .filter {
+          margin: 5px;
+        }
+      }
+    }
+
+    h5 {
+      font-size: medium;
+      color: $primary;
+      margin-bottom: 5px;
+    }
+
+    h6 {
+      font-size: medium;
+      color: $accent;
+      margin: 5px;
+      text-align: center;
+    }
+
+   
+    button:hover {
+      background-color: rgba($color: $primary, $alpha: 0.8);
+    }
+    h3 {
+      padding: 10px 0 10px 0;
+      font-size: medium;
+    }
+
+    hr {
+      margin-bottom: 10px;
+    }
+
+    .head,
+    .row {
+      background-color: $primarylight;
+      display: grid;
+      gap: 1px;
+    }
+
+    .row {
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
+    .row:hover {
+      box-shadow: 1px 1px 5px #60606020;
+    }
+
+    h4 {
+      font-size: medium;
+      color: $white;
+      background-color: #60606020;
+      border-radius: 2px;
+      padding: 5px;
+    }
+    p {
+      font-size: medium;
+      border-radius: 2px;
+      padding: 7px 5px 7px 5px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .btns {
+      width: 95%;
+      margin: auto;
+      display: flex;
+      flex-direction: row;
+      .newMember {
+        margin: 1em auto 0 0;
+        font-size: larger;
+        background-color: $accent;
+        color: white;
+        cursor: pointer;
+        height: fit-content;
+        display: block;
+        padding: 6px;
+        border-radius: 4px;
+        box-shadow: 1px 1px 5px #60606030;
+      }
+
+      .newMember:hover {
+        background-color: $primary;
+      }
+    }
+  }
+
+  .popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    display: flex;
+    align-items: center;
+    z-index: 999999;
+    animation: zoom 1s ease;
+
+    .container {
+      background-color: white;
+      border-radius: 5px;
+      padding: 10px;
+      margin: auto;
+      color: #000000;
+      min-width: 50vw;
+      max-width: 70vw;
+      min-height: 50vh;
+      height: fit-content;
+      overflow-y: auto;
+      width: fit-content; /* Standard property */
+      width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+      position: relative;
+
+      .bar {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        background-color: $accent;
+        color: white;
+        padding: 0 !important;
+        margin-bottom: 10px;
+
+        p {
+          text-align: center;
+          margin: 0 !important;
+          cursor: pointer;
+        }
+
+        .active {
+          background-color: wheat;
+          color: $accent;
+        }
+
+        p:hover {
+          background-color: wheat;
+          color: $accent;
+        }
+
+        @include maxwidth(mobile) {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+        @include maxwidth(tablet) {
+          grid-template-columns: repeat(3, 1fr) !important;
+        }
+      }
+
+      .ppmap {
+        margin: auto;
+        width: 50vw;
+        height: 60vh;
+        border-radius: 3px;
+        box-shadow: 1px 1px 5px #60606030;
+        overflow: hidden;
+        .pmap {
+          width: 100%;
+          height: 100%;
+          border-radius: 8px;
+          box-shadow: 1px 1px 5px #60606030;
+          overflow: hidden;
+        }
+      }
+
+      .pcontent {
+        position: relative;
+        min-height: 30vh;
+
+        .prow {
+          display: grid;
+          grid-template-columns: 1fr 4fr;
+          border-bottom: 1px solid #60606030;
+
+          :first-child {
+            background-color: #60606010 !important;
+            padding: 2px !important;
+            font-size: small !important;
+          }
+          p {
+            padding: 2px !important;
+            font-size: small !important;
+          }
+        }
+
+        .tally {
+          position: absolute;
+          top: 5px;
+          right: 0;
+
+          .active {
+            background-color: #74465c;
+          }
+
+          p {
+            background-color: $accent;
+            border-radius: 2px;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            text-align: center;
+            color: white;
+          }
+          p:hover {
+            background-color: #74465c;
+          }
+        }
+
+        @include maxwidth(mobile) {
+          display: block !important;
+
+          p {
+            word-wrap: break-word !important;
+          }
+        }
+        @include maxwidth(tablet) {
+          display: block !important;
+          p {
+            word-wrap: break-word !important;
+          }
+        }
+      }
+
+      .col2 {
+        column-count: 2; /* Number of columns you want */
+        column-gap: 20px; /* Gap between columns */
+        max-height: 300px; /* Set the maximum height of the parent container */
+        overflow: hidden; /* Hide overflow content */
+      }
+
+      .confirm {
+        padding-top: 20px;
+        text-align: center;
+        p {
+          width: 100%;
+        }
+
+        .success {
+          color: $green;
+        }
+
+        .isError {
+          color: red;
+        }
+
+       
+
+        button:hover {
+          background-color: rgba($color: $primary, $alpha: 0.8);
+        }
+
+        .newMember {
+          margin: 1em auto 0 auto;
+          text-decoration: none;
+          font-size: larger;
+          background-color: $accent;
+          color: white;
+          cursor: pointer;
+          height: fit-content;
+          display: block;
+          padding: 6px;
+          border-radius: 4px;
+          box-shadow: 1px 1px 5px #60606030;
+        }
+
+        .newMember:hover {
+          background-color: $primary;
+        }
+      }
+
+      .search {
+        padding-top: 10px;
+        text-align: center;
+
+      
+
+        .search_list {
+          margin-top: 2px;
+          cursor: pointer;
+        }
+      }
+
+      h3 {
+        text-align: center;
+        font-size: x-large !important;
+      }
+
+      .fa-times {
+        position: absolute;
+        right: 1em;
+        top: 10px;
+        padding: 10px;
+        cursor: pointer;
+        color: $primary;
+      }
+      .fa-times:hover {
+        color: $accent;
+      }
+
+      hr {
+        margin-bottom: 10px;
+      }
+
+      i {
+        display: block;
+        width: fit-content; /* Standard property */
+        width: -moz-fit-content; /* Firefox 3+, Firefox for Android 4+ */
+        padding: 5px;
+        margin: 0 0 0 auto;
+        color: $accent;
+      }
+      i:hover {
+        color: $primary;
+      }
+
+      h3 {
+        padding: 0px 0 10px 0;
+        font-size: medium;
+      }
+
+      form {
+        textarea {
+          resize: none;
+          width: 100%;
+          margin: auto;
+          padding: 4px;
+          font-size: 18px;
+        }
+      }
+
+    
+
+      p {
+        font-size: medium;
+        margin: 0px 0 5px 0;
+
+        b {
+          color: #74465c;
+          cursor: pointer;
+        }
+      }
+
+     
+      button:hover {
+        background-color: rgba($color: $primary, $alpha: 0.8);
+      }
+    }
+    @include maxwidth(mobile) {
+      .container {
+        max-width: 85% !important;
+      }
+    }
+    @include maxwidth(tablet) {
+      .container {
+        max-width: 85% !important;
+      }
+    }
+
+    .dets {
+      display: grid;
+      grid-template-columns: 1fr auto;
+
+      .fa {
+        color: $accent;
+        height: fit-content;
+        margin: auto;
+        padding: 5px;
+      }
+      .fa:hover {
+        color: $primary;
+      }
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+    }
+
+    hr {
+      margin-bottom: 10px;
+    }
+  }
+
+  .editcomponents {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.3);
+
+    .cont {
+      background-color: white;
+      border: 1px solid #60606030;
+      box-shadow: 2px 2px 10px #60606030;
+      border-radius: 8px;
+      padding: 1em;
+      max-width: 80%;
+      width: 100%;
+      margin: auto;
+      height: fit-content;
+      max-height: 80vh;
+      overflow: auto;
+    }
+
+    .dets {
+      display: grid;
+      grid-template-columns: 1fr auto;
+
+      .fa {
+        color: $accent;
+        height: fit-content;
+        margin: auto;
+        padding: 5px;
+      }
+      .fa:hover {
+        color: $primary;
+      }
+    }
+
+    .content {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 5px;
+    }
+
+    hr {
+      margin-bottom: 10px;
+    }
+  }
+}

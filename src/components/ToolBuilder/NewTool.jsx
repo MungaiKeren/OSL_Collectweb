@@ -159,6 +159,7 @@ const Step1 = (props) => {
       })
       .then((data) => {
         setLoading(false);
+        console.log(data);
         if (data.success) {
           setError(data.success);
           localStorage.setItem("tsediting", data.ID);

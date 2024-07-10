@@ -150,7 +150,7 @@ const Item = (props) => {
       <FontAwesomeIcon
         onClick={() => {
           window.open(
-            `/wkwp/questionnaire/${props.item.DataTableName}`,
+            `/questionnaire/${props.item.DataTableName}`,
             "_blank"
           );
         }}

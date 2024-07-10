@@ -60,15 +60,11 @@ export default function Home(props) {
           />
 
           <div className="full">
-            {pathname[1] === "buildtool" &&
-              pathname.length === 2 &&
-               <ToolBuilder />}
+            {pathname[1] === "buildtool" && pathname.length === 2 && <ToolBuilder />}
 
-            {pathname[1] === "buildtool" &&
-              pathname[2] === "new" && <NewTool />}
+            {pathname[1] === "buildtool" && pathname[2] === "new" && <NewTool />}
 
-            {pathname[1] === "buildtool" &&
-              pathname[2] === "update" && <UpdateTool />}
+            {pathname[1] === "buildtool" && pathname[2] === "update" && <UpdateTool />}
 
             {pathname[1] === "buildtool"  && <TBData />}
 

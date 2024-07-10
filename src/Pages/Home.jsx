@@ -66,7 +66,7 @@ export default function Home(props) {
 
             {pathname[1] === "buildtool" && pathname[2] === "update" && <UpdateTool />}
 
-            {pathname[1] === "buildtool"  && <TBData />}
+            {pathname[1] === "buildtool" && pathname[2] === "data" && <TBData />}
 
             {pathname[1] === "users" && <UserHome role={role} />}
 

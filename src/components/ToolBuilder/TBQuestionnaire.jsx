@@ -21,7 +21,7 @@ export default function TBQuestionnaire(props) {
   useEffect(() => {
     if (data == null) {
       setLoading(true);
-      fetch(`/api/questions/bytablename/${pathname[3]}`)
+      fetch(`/api/questions/bytablename/${pathname[2]}`)
         .then((res) => {
           if (res.ok) return res.json();
           else throw Error("");
@@ -50,7 +50,7 @@ export default function TBQuestionnaire(props) {
   useEffect(() => {
     if (table == null) {
       setLoading(true);
-      fetch(`/api/toolslist/bytablename/${pathname[3]}`)
+      fetch(`/api/toolslist/bytablename/${pathname[2]}`)
         .then((res) => {
           if (res.ok) return res.json();
           else throw Error("");
@@ -148,7 +148,7 @@ export default function TBQuestionnaire(props) {
 
     setLoading(true);
 
-    fetch(`/api/toolslist/submittabledata/${pathname[3]}`, {
+    fetch(`/api/toolslist/submittabledata/${pathname[2]}`, {
       method: "POST",
       credentials: "include",
       headers: {

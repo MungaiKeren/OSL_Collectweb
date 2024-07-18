@@ -2,8 +2,6 @@
 import "../Styles/login.scss";
 import Button from "../components/Util/Button";
 import Input from "../components/Util/Input";
-import wkwp_logo from "../assets/imgs/wkwp_logo.png";
-import usaid_logo from "../assets/imgs/usaid_logo.png";
 import { useRef, useState } from "react";
 import Loading from "../components/Util/Loading";
 import ForgetPassword from "../components/Login/ForgetPassword";
@@ -84,9 +82,9 @@ export default function Login(props) {
   return (
     <div ref={ref} className="login">
       <div className="top_logos">
-        <img src={usaid_logo} alt="" />
+        {/* <img src={usaid_logo} alt="" /> */}
         <div></div>
-        <img src={wkwp_logo} alt="" />
+        {/* <img src={wkwp_logo} alt="" /> */}
       </div>
       <div className="card">
         <div className="container">
@@ -99,7 +97,7 @@ export default function Login(props) {
           <div className="left">
             <div className="sys">
               <div className="sysname">
-                <h1>MEL-MIS</h1>
+                <h1>OSL Collect</h1>
               </div>
             </div>
             <div className="attribution">

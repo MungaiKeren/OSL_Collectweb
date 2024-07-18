@@ -54,7 +54,7 @@ export default function Login(props) {
             localStorage.removeItem("path");
             setIsErr(data.success);
             setLoading(false);
-            window.location.href = "/";
+            window.location.href = "/buildtool";
           } else {
             setLoading(false);
             setIsErr(data.error);

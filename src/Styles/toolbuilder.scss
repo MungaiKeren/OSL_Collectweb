@@ -1,5 +1,5 @@
-@import "./mediaquery";
-@import "./variables.scss";
+@use "./mediaquery";
+@use "./variables.scss";
 
 .toolbuilder {
   height: 100%;
@@ -224,7 +224,7 @@
         background-color: $primarylight;
         color: white;
         padding: 5px 10px;
-         border: 1px solid #ffffff30;
+        border: 1px solid #ffffff30;
         overflow-x: hidden;
         font-weight: 520;
       }
@@ -802,15 +802,15 @@
             grid-template-columns: 1fr;
           }
 
-          .ic-data{
+          .ic-data {
             top: -14%;
             right: 20%;
           }
-          .ic-link{
+          .ic-link {
             top: -14%;
             right: 10%;
           }
-          .ic-edit{
+          .ic-edit {
             top: -14%;
             right: 5;
           }
@@ -821,8 +821,8 @@
 }
 
 @include maxwidth(tablet) {
-  .list{
-    .ic-data{
+  .list {
+    .ic-data {
       right: 13%;
     }
     // .ic-link{
@@ -832,7 +832,6 @@
     //   right: 5;
     // }
   }
-  
 }
 
 @keyframes flipIcon {

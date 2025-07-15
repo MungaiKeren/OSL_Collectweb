@@ -1,5 +1,5 @@
-@import "./variables";
-@import "./mediaquery";
+@use "./variables";
+@use "./mediaquery";
 
 .login {
   height: 100vh;

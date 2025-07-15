@@ -168,6 +168,7 @@ const Step1 = (props) => {
         }
       })
       .catch((err) => {
+        console.log(err);        
         setLoading(false);
         setError("Oops! Something went wrong!");
       });

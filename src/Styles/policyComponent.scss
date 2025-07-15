@@ -1,5 +1,5 @@
-@import "./mediaquery";
-@import "./variables";
+@use "./mediaquery";
+@use "./variables";
 
 .policyComponent {
   height: fit-content !important;
@@ -57,7 +57,7 @@
         margin-bottom: 5px;
         font-weight: 520;
       }
-  
+
       p {
         color: gray;
         font-size: small;
@@ -112,151 +112,151 @@
       }
     }
   }
-  
-    .section {
-      padding: 1em 0 1em;
-  
-      .sect-card {
-        background-color: white;
+
+  .section {
+    padding: 1em 0 1em;
+
+    .sect-card {
+      background-color: white;
+      border-radius: 5px;
+      position: relative;
+      padding: 1em;
+      margin-bottom: 2em;
+
+      .head {
+        display: grid;
+        grid-template-columns: auto auto;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 10px;
+
+        .title {
+          h3 {
+            color: $primary;
+            font-size: medium;
+            margin-bottom: 5px;
+            font-weight: 520;
+          }
+
+          p {
+            color: gray;
+            font-size: small;
+            margin-bottom: 5px;
+          }
+
+          hr {
+            color: #60606010;
+            margin-bottom: 10px;
+          }
+        }
+
+        .filter {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+
+          .fa {
+            color: $primarylight;
+          }
+        }
+      }
+
+      .theads {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding-top: 1em;
+
+        .topright {
+          display: grid;
+          grid-template-columns: repeat(7, auto);
+          gap: 1em;
+          text-align: center;
+        }
+
+        p {
+          cursor: pointer;
+        }
+      }
+
+      .tbody {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1em;
+        background: white;
         border-radius: 5px;
-        position: relative;
         padding: 1em;
         margin-bottom: 2em;
-  
-        .head {
-          display: grid;
-          grid-template-columns: auto auto;
-          justify-content: space-between;
-          align-items: center;
-          padding-bottom: 10px;
+        box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
 
-          .title {
-              h3 {
-                color: $primary;
-                font-size: medium;
-                margin-bottom: 5px;
-                font-weight: 520;
-              }
-          
-              p {
-                color: gray;
-                font-size: small;
-                margin-bottom: 5px;
-              }
-          
-              hr {
-                color: #60606010;
-                margin-bottom: 10px;
-              }
-            }
-  
-          .filter {
-            display: flex;
-            flex-direction: row;
-            gap: 10px;
-  
-            .fa {
-              color: $primarylight;
-            }
+        p {
+          font-size: small;
+        }
+
+        .left {
+          display: grid;
+          grid-template-columns: 0.3fr 1fr;
+          align-items: center;
+          gap: 1em;
+
+          .ind-code {
+            text-align: center;
+            border: 1px solid $secondary;
+            color: $secondary;
+            padding: 6px;
+            border-radius: 5px;
+          }
+
+          .ind-desc {
+            color: $accent;
+            border-right: 1px solid $accent;
+          }
+
+          p {
+            text-wrap: balance;
           }
         }
-  
-        .theads {
+
+        .right {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          padding-top: 1em;
-  
-          .topright {
-            display: grid;
-            grid-template-columns: repeat(7, auto);
-            gap: 1em;
-            text-align: center;
-          }
-  
+          grid-template-columns: repeat(7, 1fr);
+          align-items: center;
+          gap: 1em;
+
           p {
             cursor: pointer;
+            color: $accent;
           }
-        }
-  
-        .tbody {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1em;
-          background: white;
-          border-radius: 5px;
-          padding: 1em;
-          margin-bottom: 2em;
-          box-shadow: 4px 4px 10px 0px rgba(0, 0, 0, 0.05);
-          cursor: pointer;
-  
-          p {
-            font-size: small;
-          }
-  
-          .left {
-            display: grid;
-            grid-template-columns: 0.3fr 1fr;
-            align-items: center;
-            gap: 1em;
-  
-            .ind-code {
-              text-align: center;
-              border: 1px solid $secondary;
+
+          .badge {
+            border-right: 1px solid $accent;
+            border-left: 1px solid $accent;
+            padding: 7px;
+            width: 85px;
+
+            p {
+              background: $primarylighter;
               color: $secondary;
-              padding: 6px;
-              border-radius: 5px;
-            }
-  
-            .ind-desc {
-              color: $accent;
-              border-right: 1px solid $accent;
-            }
-  
-            p {
-              text-wrap: balance;
+              text-align: center;
+              padding: 2px;
+              border-radius: 15px;
             }
           }
-  
-          .right {
+
+          .q4 {
+            border-right: 1px solid $accent;
+            padding: 7px;
+            margin-left: -7px;
+          }
+
+          .achievement {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            align-items: center;
-            gap: 1em;
-  
-            p {
-              cursor: pointer;
-              color: $accent;
-            }
-  
-            .badge {
-              border-right: 1px solid $accent;
-              border-left: 1px solid $accent;
-              padding: 7px;
-              width: 85px;
-  
-              p {
-                background: $primarylighter;
-                color: $secondary;
-                text-align: center;
-                padding: 2px;
-                border-radius: 15px;
-              }
-            }
-  
-            .q4 {
-              border-right: 1px solid $accent;
-              padding: 7px;
-              margin-left: -7px;
-            }
-  
-            .achievement {
-              display: grid;
-              grid-template-columns: 1fr 1fr;
-            }
+            grid-template-columns: 1fr 1fr;
           }
         }
       }
     }
+  }
 
   .bottom {
     height: 90vh;

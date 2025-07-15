@@ -1,5 +1,5 @@
-@import "./variables";
-@import "./mediaquery";
+@use "./variables";
+@use "./mediaquery";
 
 .users {
   height: 100%;
@@ -334,17 +334,17 @@
     }
   }
 
-  @include maxwidth (mobile) {
-    .list{
-      .div31{
+  @include maxwidth(mobile) {
+    .list {
+      .div31 {
         grid-template-columns: 1fr;
-        .user-list{
+        .user-list {
           grid-template-columns: 1fr;
         }
       }
-      .utp{
+      .utp {
         grid-template-columns: 1fr;
-      }      
+      }
     }
   }
 }

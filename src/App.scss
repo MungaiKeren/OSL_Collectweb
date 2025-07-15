@@ -1,8 +1,8 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;900&display=swap");
-@import "./Styles/mediaquery";
-@import "./Styles/variables";
-@import "./Styles/3_NotFound";
-//@import "./Styles/2_utils";
+@use url("https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;900&display=swap");
+@use "./Styles/mediaquery";
+@use "./Styles/variables";
+@use "./Styles/3_NotFound";
+//@use "./Styles/2_utils";
 
 .sr-only {
   display: none;

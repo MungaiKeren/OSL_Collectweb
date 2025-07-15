@@ -1,5 +1,5 @@
-@import "./mediaquery";
-@import "./variables";
+@use "./mediaquery";
+@use "./variables";
 
 .single-county {
   height: 100%;
@@ -151,7 +151,6 @@
       gap: 10px;
       padding: 5px;
       margin-bottom: 10px;
-
 
       h3 {
         font-weight: 520;
@@ -856,7 +855,6 @@
           text-align: left !important;
           height: fit-content !important;
         }
-       
       }
     }
   }

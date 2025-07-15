@@ -1,5 +1,5 @@
-@use "./mediaquery";
-@use "./variables";
+@use "../Styles/mediaquery" as *;
+@use "../Styles/variables" as *;
 
 .settings {
   height: 100%;

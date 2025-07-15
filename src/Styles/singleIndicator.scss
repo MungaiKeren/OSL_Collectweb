@@ -1,5 +1,5 @@
 @use "./mediaquery.scss";
-@use "./variables.scss";
+@use "../Styles/variables" as *;
 
 .singleIndicator {
   height: 100%;

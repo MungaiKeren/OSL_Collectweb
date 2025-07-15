@@ -1,5 +1,5 @@
-@use "./variables";
-@use "./mediaquery";
+@use "../Styles/variables" as *;
+@use "../Styles/mediaquery" as *;
 
 .users {
   height: 100%;

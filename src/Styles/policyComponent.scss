@@ -1,5 +1,5 @@
-@use "./mediaquery";
-@use "./variables";
+@use "../Styles/mediaquery" as *;
+@use "../Styles/variables" as *;
 
 .policyComponent {
   height: fit-content !important;

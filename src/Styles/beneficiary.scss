@@ -1,5 +1,5 @@
-@use "./variables";
-@use "./mediaquery";
+@use "../Styles/variables" as *;
+@use "../Styles/mediaquery" as *;
 
 .beneficiary {
   height: 100%;
@@ -172,7 +172,7 @@
           color: $secondary;
           cursor: pointer;
         }
-        .fa-icon:hover{
+        .fa-icon:hover {
           color: $accent;
         }
 
@@ -284,7 +284,7 @@
               }
 
               p {
-                font-size: x-small;              
+                font-size: x-small;
               }
             }
           }
@@ -415,7 +415,7 @@
         input {
           padding: 5px;
           width: 100%;
- 
+
           border-top: none;
           border-right: none;
           border-left: none;

@@ -1,5 +1,5 @@
-@use "./mediaquery";
-@use "./variables";
+@use "../Styles/mediaquery" as *;
+@use "../Styles/variables" as *;
 
 .components {
   height: 100%;
@@ -75,7 +75,6 @@
       text-align: center;
     }
 
-   
     button:hover {
       background-color: rgba($color: $primary, $alpha: 0.8);
     }
@@ -300,8 +299,6 @@
           color: red;
         }
 
-       
-
         button:hover {
           background-color: rgba($color: $primary, $alpha: 0.8);
         }
@@ -328,8 +325,6 @@
       .search {
         padding-top: 10px;
         text-align: center;
-
-      
 
         .search_list {
           margin-top: 2px;
@@ -385,8 +380,6 @@
         }
       }
 
-    
-
       p {
         font-size: medium;
         margin: 0px 0 5px 0;
@@ -397,7 +390,6 @@
         }
       }
 
-     
       button:hover {
         background-color: rgba($color: $primary, $alpha: 0.8);
       }

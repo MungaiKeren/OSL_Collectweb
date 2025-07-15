@@ -1,5 +1,5 @@
-@use  "../Styles/mediaquery";
-@use  "../Styles/variables";
+@use  "../Styles/mediaquery" as *;
+@use "../Styles/variables" as *;
 
 .Util {
   .Navigation {

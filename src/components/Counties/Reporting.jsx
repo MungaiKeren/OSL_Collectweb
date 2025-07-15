@@ -5,7 +5,6 @@ import RippleLoading from "../Util/RippleLoading.jsx";
 import Select from "../Util/Select.jsx";
 
 export default function Reporting(props) {
-  const jwt = require("jsonwebtoken");
   const { getMonths } = require("../../assets/data/data.js");
   const [data, setData] = useState([]);
   const [year, setYear] = useState(null);

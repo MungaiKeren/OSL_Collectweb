@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import "../../Styles/settings.scss";
 import Button from "../Util/Button";
 import Input from "../Util/Input";
+import { jwtDecode } from "jwt-decode";
 
 export default function Settings(props) {
-  let jwt = require("jsonwebtoken");
   const [currentUser, setCurrentUser] = useState("");
   const [error, setError] = useState("");
   const psd = useRef();
@@ -16,7 +16,7 @@ export default function Settings(props) {
 
     if (token) {
       try {
-        let decoded = jwt.decode(token);
+        let decoded = jwtDecode(token);
         if (Date.now() >= decoded.exp * 1000) {
           window.location.href = "/login";
         } else {

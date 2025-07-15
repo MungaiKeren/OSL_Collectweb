@@ -17,9 +17,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import wkwp_logo from "../../assets/imgs/wkwp_logo.png";
+import { jwtDecode } from "jwt-decode";
 
 export default function Header(props) {
-  let jwt = require("jsonwebtoken");
   const [nav, setNav] = useState(false);
   const [details, setDetails] = useState("");
   const [login, setLogin] = useState("");
@@ -33,7 +33,7 @@ export default function Header(props) {
 
     if (token) {
       try {
-        let decoded = jwt.decode(token);
+        let decoded = jwtDecode(token);
         if (Date.now() >= decoded.exp * 1000) {
           window.location.href = "/login";
         } else {

@@ -8,6 +8,7 @@ import NewTool from "../components/ToolBuilder/NewTool";
 import UpdateTool from "../components/ToolBuilder/UpdateTool";
 import UserHome from "../components/Users/UserHome";
 import TBData from "../components/ToolBuilder/TBData";
+import { jwtDecode } from "jwt-decode";
 
 export default function Home(props) {
   const [showing, setShowing] = useState(true);
@@ -27,12 +28,11 @@ export default function Home(props) {
     handleResize();
   }, []);
 
-  const jwt = require("jsonwebtoken");
 
   useEffect(() => {
     const token = localStorage.getItem("gdfhgfhtkngdfhgfhtkn");
     if (token) {
-      let decoded = jwt.decode(token);
+      let decoded = jwtDecode(token);
       setRole(decoded.Role);
     }
   }, []);

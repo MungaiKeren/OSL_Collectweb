@@ -2,6 +2,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
+import { jwtDecode } from "jwt-decode";
 import "../../Styles/components.scss";
 import Input from "../Util/Input";
 import Pagination from "../Util/Pagination";
@@ -9,7 +10,6 @@ import Select from "../Util/Select";
 import WaveLoading from "../Util/WaveLoading";
 
 export default function Components(props) {
-  const jwt = require("jsonwebtoken");
   const [data, setData] = useState(null);
   const [head, setHead] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,7 +29,7 @@ export default function Components(props) {
   const query = useRef();
 
   const token = localStorage.getItem("gdfhgfhtkn");
-  let decoded = jwt.decode(token);
+  let decoded = jwtDecode(token);
 
   useEffect(() => {
     setIsLoading(true);

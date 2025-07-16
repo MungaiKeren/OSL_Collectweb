@@ -10,7 +10,7 @@ COPY package*.json ./
 RUN npm cache clean --force
 
 # Install dependencies using clean install
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Copy remaining source files AFTER install
 COPY . .

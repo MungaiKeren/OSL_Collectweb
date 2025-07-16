@@ -47,8 +47,25 @@ const theme = createTheme({
         },
       },
       defaultProps: {
-        // optional defaults
-        elevation: 0, // disable default shadow if custom one is used
+        elevation: 0,
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          color: "#23263a", // dark navy for input text
+          "::placeholder": {
+            color: "#6c6f7e", // subtle grey for placeholder
+            opacity: 1,
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        input: {
+          color: "#23263a",
+        },
       },
     },
   },

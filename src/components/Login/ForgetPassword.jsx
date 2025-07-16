@@ -27,6 +27,7 @@ export default function ForgetPassword(props) {
         icon: "error",
         title: "Invalid Email",
         text: "Please provide a valid email address!",
+        zIndex: 1500,
       });
       return;
     }
@@ -52,12 +53,18 @@ export default function ForgetPassword(props) {
           text: data.success,
           timer: 1800,
           showConfirmButton: false,
+          zIndex: 1500,
         });
         setTimeout(() => {
           props.setToggleForgot(false);
         }, 1800);
       } else {
-        Swal.fire({ icon: "error", title: "Error", text: data.error });
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: data.error,
+          zIndex: 1500,
+        });
       }
     } catch (err) {
       props.setLoading(false);
@@ -65,6 +72,7 @@ export default function ForgetPassword(props) {
         icon: "error",
         title: "Error",
         text: "Something went wrong!",
+        zIndex: 1500,
       });
     }
   };
@@ -83,6 +91,8 @@ export default function ForgetPassword(props) {
       onClose={() => props.setToggleForgot(false)}
       maxWidth="xs"
       fullWidth
+      PaperProps={{ sx: { zIndex: 1200 } }}
+      slotProps={{ backdrop: { sx: { zIndex: 1100 } } }}
     >
       <DialogTitle
         sx={{

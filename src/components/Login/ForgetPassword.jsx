@@ -8,60 +8,65 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
-import Alert from "@mui/material/Alert";
 import Divider from "@mui/material/Divider";
+import Swal from "sweetalert2";
 
 export default function ForgetPassword(props) {
   const rfEmail = useRef();
-  const [isError, setIsError] = useState();
   const [body, updateBody] = useState({
     Email: "",
   });
-  const [success, setSuccess] = useState("");
 
-  const forgetPassword = () => {
+  const forgetPassword = async () => {
     let d = { ...body };
     d.Email = rfEmail.current.value.toLowerCase().trim();
     updateBody(d);
 
     if (!verifyEmail(d.Email)) {
-      setIsError("Please provide a valid email address!");
-      setSuccess("");
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Email",
+        text: "Please provide a valid email address!",
+      });
       return;
     }
 
     props.setLoading(true);
-    fetch("/api/auth/forgot", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(d),
-    })
-      .then((res) => {
-        if (res.ok) return res.json();
-        else throw Error("Failed");
-      })
-      .then((data) => {
-        props.setLoading(false);
-        if (data.success) {
-          setSuccess(data.success);
-          setIsError("");
-          setTimeout(() => {
-            props.setToggleForgot(false);
-          }, 2000);
-        } else {
-          setIsError(data.error);
-          setSuccess("");
-        }
-      })
-      .catch(() => {
-        props.setLoading(false);
-        setIsError("Something went wrong!");
-        setSuccess("");
+    try {
+      const res = await fetch("/api/auth/forgot", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(d),
       });
+      if (!res.ok) throw new Error("Failed");
+      const data = await res.json();
+      props.setLoading(false);
+      if (data.success) {
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: data.success,
+          timer: 1800,
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          props.setToggleForgot(false);
+        }, 1800);
+      } else {
+        Swal.fire({ icon: "error", title: "Error", text: data.error });
+      }
+    } catch (err) {
+      props.setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Something went wrong!",
+      });
+    }
   };
 
   const verifyEmail = (email) => {
@@ -112,16 +117,6 @@ export default function ForgetPassword(props) {
           Enter a valid email address. A password will be generated and sent to
           your email account.
         </Typography>
-        {isError && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {isError}
-          </Alert>
-        )}
-        {success && (
-          <Alert severity="success" sx={{ mb: 2 }}>
-            {success}
-          </Alert>
-        )}
         <TextField
           inputRef={rfEmail}
           type="email"

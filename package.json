@@ -53,6 +53,7 @@
     "react-signature-canvas": "^1.0.7",
     "recharts": "^3.1.0",
     "sass": "^1.89.2",
+    "sweetalert2": "^11.22.2",
     "vite": "^6.3.5",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.4",

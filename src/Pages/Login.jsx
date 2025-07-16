@@ -5,16 +5,19 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Alert from "@mui/material/Alert";
 import Link from "@mui/material/Link";
 import Fade from "@mui/material/Fade";
 import CircularProgress from "@mui/material/CircularProgress";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import ForgetPassword from "../components/Login/ForgetPassword";
+import Swal from "sweetalert2";
 
 export default function Login(props) {
   const rfEmail = useRef();
   const rfPassword = useRef();
-  const [isErr, setIsErr] = useState("");
   const [loading, setLoading] = useState(false);
   const [body, updateBody] = useState({
     Email: "",
@@ -22,57 +25,70 @@ export default function Login(props) {
   });
   const [toggleForgot, setToggleForgot] = useState(false);
   const [cardIn, setCardIn] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  // Animate card in on mount
   useState(() => {
     setTimeout(() => setCardIn(true), 100);
   }, []);
 
-  const login = () => {
+  const login = async () => {
     let d = { ...body };
     d.Email = rfEmail.current.value.toLowerCase().trim();
     d.Password = rfPassword.current.value;
     updateBody(d);
-    setIsErr("");
 
-    if (!validateEmail(d.Email))
-      return setIsErr("Please Enter a Valid Email Address!");
-    if (!validatePassword(d.Password))
-      return setIsErr("Password must be at least 6 characters!");
+    if (!validateEmail(d.Email)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Email",
+        text: "Please Enter a Valid Email Address!",
+      });
+      return;
+    }
+    if (!validatePassword(d.Password)) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Password",
+        text: "Password must be at least 6 characters!",
+      });
+      return;
+    }
 
     setLoading(true);
-    fetch("/api/auth/login", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(d),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw Error("Login Failed");
-        }
-      })
-      .then((data) => {
-        if (data.success) {
-          localStorage.setItem("gdfhgfhtkngdfhgfhtkn", data.token);
-          localStorage.removeItem("path");
-          setIsErr(data.success);
-          setLoading(false);
-          window.location.href = "/buildtool";
-        } else {
-          setLoading(false);
-          setIsErr(data.error);
-        }
-      })
-      .catch((err) => {
-        setLoading(false);
-        setIsErr("Login failed");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(d),
       });
+      if (!res.ok) throw new Error("Login Failed");
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem("gdfhgfhtkngdfhgfhtkn", data.token);
+        localStorage.removeItem("path");
+        setLoading(false);
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          text: data.success,
+          timer: 1200,
+          showConfirmButton: false,
+        });
+        setTimeout(() => {
+          window.location.href = "/buildtool";
+        }, 1200);
+      } else {
+        setLoading(false);
+        Swal.fire({ icon: "error", title: "Login Failed", text: data.error });
+      }
+    } catch (err) {
+      setLoading(false);
+      Swal.fire({ icon: "error", title: "Login Failed", text: "Login failed" });
+    }
   };
 
   const validateEmail = (email) => {
@@ -97,7 +113,6 @@ export default function Login(props) {
         justifyContent: "center",
         position: "relative",
         overflow: "hidden",
-        // Background image plan: Replace the URL below with your chosen Unsplash/abstract image
         background: `linear-gradient(rgba(26,34,54,0.7), rgba(26,34,54,0.7)), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat`,
       }}
     >
@@ -105,8 +120,8 @@ export default function Login(props) {
         <Paper
           elevation={8}
           sx={{
-            minWidth: { xs: 420, sm: 400 },
-            maxWidth: 520,
+            minWidth: { xs: 320, sm: 400 },
+            maxWidth: 420,
             px: { xs: 3, sm: 5 },
             py: { xs: 4, sm: 6 },
             borderRadius: 4,
@@ -135,11 +150,6 @@ export default function Login(props) {
           >
             User Login
           </Typography>
-          {isErr && (
-            <Alert severity="error" sx={{ width: "100%", mb: 2 }}>
-              {isErr}
-            </Alert>
-          )}
           <Box
             component="form"
             onSubmit={(e) => {
@@ -160,12 +170,28 @@ export default function Login(props) {
             />
             <TextField
               inputRef={rfPassword}
-              type="password"
+              type={showPassword ? "text" : "password"}
               label="Password"
               variant="outlined"
               fullWidth
               required
               sx={{ mb: 2 }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                      onClick={() => setShowPassword((show) => !show)}
+                      edge="end"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
             <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
               <Link

@@ -1,33 +1,35 @@
-# Stage 1: Build stage
-FROM node:20.11.1-alpine3.19 as build
+FROM node:lts-alpine as build
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json into the container
+# Ensure no local node_modules are accidentally copied
 COPY package*.json ./
 
-# Install dependencies using npm
-RUN npm install --legacy-peer-deps
+# Clean npm cache to avoid cache corruption issues
+RUN npm cache clean --force
 
-# Copy the rest of the application source code into the container
+# Install dependencies using clean install
+RUN npm install
+
+# Copy remaining source files AFTER install
 COPY . .
 
-# Build the React application using react-app-rewired
-RUN npm install react-app-rewired && \
-    npx react-app-rewired build
+# Build your app
+RUN npm run build
 
-# Stage 2: Production stage
-FROM nginx:1.21.3-alpine
 
-# Copy nginx configuration file
-COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+# --- Production stage ---
+FROM nginx:alpine
 
-# Copy built React application from the build stage
-COPY --from=build /usr/src/app/build /usr/share/nginx/html
+# Copy nginx config
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# Copy built app from previous stage
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
 
-# Command to start nginx in the foreground
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

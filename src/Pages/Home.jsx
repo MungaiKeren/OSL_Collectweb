@@ -43,7 +43,7 @@ export default function Home(props) {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: theme.palette.background.paper,
+        bgcolor: theme.palette.background.default,
         display: "flex",
         flexDirection: "column",
       }}
@@ -76,7 +76,7 @@ export default function Home(props) {
             display: "flex",
             flexDirection: "column",
             minWidth: 0,
-            bgcolor: theme.palette.background.default,
+            bgcolor: "rgb(245, 246, 250)",
           }}
         >
           <Paper

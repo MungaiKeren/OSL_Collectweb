@@ -69,7 +69,7 @@ export default function Navigation(props) {
     }
   };
 
-  return (
+    return (
     <Box
       sx={{
         width: props.showing ? 225 : 64,

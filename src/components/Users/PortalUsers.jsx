@@ -1,17 +1,12 @@
 import {
   faSearch,
-  faTimes,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
-import "../../Styles/users.scss";
-// import Button from "../Util/Button";
-import Input from "../Util/Input";
 import Loading from "../Util/Loading";
 import Pagination from "../Util/Pagination";
-import Select from "../Util/Select";
 import SelectedUser from "./SelectedUser";
 import UserBox from "./UserBox";
 import {

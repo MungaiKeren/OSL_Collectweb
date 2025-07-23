@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PortalUsers from "./PortalUsers";
-import { Box, Typography, Button, ButtonGroup } from "@mui/material";
+import { Box, Button, ButtonGroup } from "@mui/material";
 
 export default function UserHome(props) {
   const [active, setActive] = useState("System Users");

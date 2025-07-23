@@ -11,12 +11,25 @@ import active from "../../assets/imgs/active.png";
 import inactive from "../../assets/imgs/inactive.png";
 import Loading from "../Util/Loading";
 import Pagination from "../Util/Pagination";
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  TextField,
+  Grid,
+  Stack,
+  IconButton,
+  useTheme,
+  Divider,
+} from "@mui/material";
 
 export default function ToolBuilder(props) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [offset, setOffset] = useState(0);
+  const theme = useTheme();
 
   useEffect(() => {
     setLoading(true);
@@ -51,20 +64,36 @@ export default function ToolBuilder(props) {
   }
 
   return (
-    <div className="toolbuilder">
-      <div className="title">
-        <p
-          onClick={() => {
-            localStorage.removeItem("tsediting");
-            window.location.href = "/buildtool/new";
-          }}
-          className="add"
+    <Box
+      sx={{
+        p: { xs: 1, md: 3 },
+        background: theme.palette.background.paper,
+        minHeight: "100vh",
+      }}
+    >
+      <Paper sx={{ p: 2, mb: 3 }} elevation={2}>
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          alignItems={{ sm: "center" }}
+          justifyContent="space-between"
         >
-          <i className="fa fa-plus"></i> Create Tool
-        </p>
-
-        <div className="search">
-          <input
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              localStorage.removeItem("tsediting");
+              window.location.href = "/buildtool/new";
+            }}
+            sx={{
+              fontWeight: 600,
+              backgroundColor: "secondary",
+              color: "white",
+            }}
+          >
+            + Create Tool
+          </Button>
+          <TextField
             onChange={(e) => {
               const value = e.target.value;
               if (value.length > 2) {
@@ -75,25 +104,39 @@ export default function ToolBuilder(props) {
               }
             }}
             type="text"
-            name=""
-            id=""
+            size="small"
+            placeholder="Search tools..."
+            sx={{ width: { xs: "100%", sm: 300 } }}
+            InputProps={{
+              endAdornment: (
+                <FontAwesomeIcon
+                  icon={faSearch}
+                  style={{ color: theme.palette.secondary.main }}
+                />
+              ),
+            }}
           />
-          <FontAwesomeIcon icon={faSearch} className="fa-search" />
-        </div>
-      </div>
-
-      <div className="new">
-        <div className="topbar">
-          <h4>Data Collection Tools</h4>
-          <p></p>
-        </div>
-        <div className="list">
+        </Stack>
+      </Paper>
+      <Paper sx={{ p: 2 }} elevation={1}>
+        <Typography
+          variant="h6"
+          fontWeight={600}
+          color={theme.palette.primary.main}
+          mb={2}
+        >
+          Data Collection Tools
+        </Typography>
+        <Divider />
+        <Grid container spacing={2}>
           {data &&
             data?.data?.length > 0 &&
-            data?.data?.map((item, i) => {
-              return <Item key={i} item={item} index={i + offset * 12} />;
-            })}
-        </div>
+            data?.data?.map((item, i) => (
+              <Grid size={{ xs: 12 }} key={i}>
+                <Item item={item} index={i + offset * 12} />
+              </Grid>
+            ))}
+        </Grid>
         <Pagination
           totalItems={data?.total}
           currentPage={offset}
@@ -101,63 +144,112 @@ export default function ToolBuilder(props) {
             setOffset(e);
           }}
         />
-        <br />
-      </div>
+      </Paper>
       {loading && <Loading />}
-    </div>
+    </Box>
   );
 }
 
 const Item = (props) => {
+  const theme = useTheme();
   const date = new Date(props.item.createdAt).toLocaleString("en-US");
 
   return (
-    <div className="item">
-      {props.item.Status === "Active" ? (
-        <img className="fa" src={active} alt="" />
-      ) : (
-        <img className="fa" src={inactive} alt="" />
-      )}
-      <div className="ttitem">
-        <h6>{props.index + 1}</h6>
-        <div>
-          <h4>{props.item.ToolName}</h4>
-          <p>{props.item.Description}</p>
-        </div>
-        <div>
-          <h5>Data table Name: {props.item.DataTableName}</h5>
-          <h5>County: {props.item.County}</h5>
-        </div>
-        <h5 className="dt">{date}</h5>
-        <div></div>
-      </div>{" "}
-      <FontAwesomeIcon
-        onClick={() => {
-          window.location.href = "/buildtool/data/" + props.item.DataTableName;
+    <Paper
+      elevation={2}
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        p: 2,
+        gap: 2,
+        borderRadius: 2,
+        background: theme.palette.background.paper,
+        boxShadow: "0 2px 8px 0 #00000010",
+        transition: "box-shadow 0.2s",
+        "&:hover": {
+          boxShadow: "0 4px 16px 0 #00000020",
+        },
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mr: 2,
         }}
-        className="ic-data"
-        icon={faDatabase}
-        title="Save"
-      />
-      <FontAwesomeIcon
-        onClick={() => {
-          window.location.href = "/buildtool/update/" + props.item.ID;
-        }}
-        className="ic-edit"
-        icon={faEdit}
-        title="Edit"
-      />
-      <FontAwesomeIcon
-        onClick={() => {
-          window.open(
-            `/questionnaire/${props.item.DataTableName}`,
-            "_blank"
-          );
-        }}
-        className="ic-link"
-        icon={faLink}
-        title="View"
-      />
-    </div>
+      >
+        <img
+          src={props.item.Status === "Active" ? active : inactive}
+          alt={props.item.Status}
+          style={{ width: 36, height: 36, marginBottom: 4 }}
+        />
+        <Typography
+          variant="caption"
+          color={
+            props.item.Status === "Active"
+              ? theme.palette.success.main
+              : theme.palette.error.main
+          }
+        >
+          {props.item.Status}
+        </Typography>
+      </Box>
+      <Box sx={{ flex: 1 }}>
+        <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+          <Typography variant="subtitle2" color={theme.palette.text.secondary}>
+            #{props.index + 1}
+          </Typography>
+          <Typography
+            variant="h6"
+            color={theme.palette.primary.main}
+            fontWeight={600}
+          >
+            {props.item.ToolName}
+          </Typography>
+        </Stack>
+        <Stack direction="row" spacing={2} mb={1}>
+          <Typography variant="body2" color={theme.palette.text.secondary}>
+            <b>Data table:</b> {props.item.DataTableName}
+          </Typography>
+          <Typography variant="body2" color={theme.palette.text.secondary}>
+            <b>County:</b> {props.item.County}
+          </Typography>
+        </Stack>
+        <Typography variant="caption" color={theme.palette.grey[400]}>
+          {date}
+        </Typography>
+      </Box>
+      <Stack direction="row" spacing={1} alignItems="center">
+        <IconButton
+          onClick={() => {
+            window.location.href =
+              "/buildtool/data/" + props.item.DataTableName;
+          }}
+          color="primary"
+          size="small"
+        >
+          <FontAwesomeIcon icon={faDatabase} />
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            window.location.href = "/buildtool/update/" + props.item.ID;
+          }}
+          color="secondary"
+          size="small"
+        >
+          <FontAwesomeIcon icon={faEdit} />
+        </IconButton>
+        <IconButton
+          onClick={() => {
+            window.open(`/questionnaire/${props.item.DataTableName}`, "_blank");
+          }}
+          color="info"
+          size="small"
+        >
+          <FontAwesomeIcon icon={faLink} />
+        </IconButton>
+      </Stack>
+    </Paper>
   );
 };

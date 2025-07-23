@@ -25,13 +25,11 @@ export default function UserBox(props) {
         alignItems: "center",
         p: 2,
         mb: 1,
+        borderRadius: 3,
         cursor: "pointer",
         border: isActive
           ? `2px solid ${theme.palette.secondary.main}`
           : `1px solid ${theme.palette.grey[200]}`,
-        background: isActive
-          ? theme.palette.secondary.light
-          : theme.palette.background.paper,
         transition: "box-shadow 0.2s, border 0.2s, background 0.2s",
         "&:hover": {
           boxShadow: 6,
@@ -58,11 +56,11 @@ export default function UserBox(props) {
         <Typography
           variant="subtitle1"
           fontWeight={600}
-          color={theme.palette.text.primary}
+          color={theme.palette.primary.main}
         >
           {props?.item?.Name}
         </Typography>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mt: 0.5 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <FontAwesomeIcon
             icon={faEnvelope}
             color={theme.palette.primary.main}
@@ -75,6 +73,8 @@ export default function UserBox(props) {
           >
             {props?.item?.Email}
           </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <FontAwesomeIcon
             icon={faPhone}
             color={theme.palette.primary.main}

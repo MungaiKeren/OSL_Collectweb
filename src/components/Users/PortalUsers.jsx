@@ -177,21 +177,26 @@ export default function PortalUsers(props) {
           <Grid size={{ xs: 12, md: 8 }}>
             <Box sx={{ minHeight: 400 }}>
               <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                {data && data?.data?.length > 0 ? (
-                  data?.data?.map((item, index) => (
-                    <UserBox
-                      key={index}
-                      item={item}
-                      userID={userID}
-                      setUserID={setUserID}
-                      selected={isMobile ? selected : null}
-                    />
-                  ))
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    No users found.
-                  </Typography>
-                )}
+                <Grid container spacing={2}>
+                  {data && data?.data?.length > 0 ? (
+                    data?.data?.map((item, index) => (
+                      <Grid size={{ xs: 12, sm: 6 }} key={index}>
+                        <UserBox
+                          item={item}
+                          userID={userID}
+                          setUserID={setUserID}
+                          selected={isMobile ? selected : null}
+                        />
+                      </Grid>
+                    ))
+                  ) : (
+                    <Grid size={12}>
+                      <Typography variant="body2" color="text.secondary">
+                        No users found.
+                      </Typography>
+                    </Grid>
+                  )}
+                </Grid>
               </Box>
               {data && (
                 <Box sx={{ mt: 2 }}>
@@ -410,9 +415,7 @@ const Popup = (props) => {
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle
-        sx={{ color: "primary.light", fontWeight: 600 }}
-      >
+      <DialogTitle sx={{ color: "primary.light", fontWeight: 600 }}>
         New User
       </DialogTitle>
       <Divider />

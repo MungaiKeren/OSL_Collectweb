@@ -208,7 +208,11 @@ export default function PortalUsers(props) {
           </Grid>
           <Grid size={{ xs: 12, md: 4 }}>
             <Paper sx={{ p: 2, minHeight: 400 }} ref={selected}>
-              <Typography variant="h6" fontWeight={600} gutterBottom>
+              <Typography
+                variant="h6"
+                sx={{ color: "primary.light", fontWeight: 600 }}
+                gutterBottom
+              >
                 User Details
               </Typography>
               <Divider sx={{ mb: 2 }} />

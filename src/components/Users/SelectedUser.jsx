@@ -8,8 +8,8 @@ import React, { useState, useRef, useEffect } from "react";
 import Confirm from "../Util/Confirm";
 import Input from "../Util/Input";
 import Select from "../Util/Select";
-import Button from "../Util/Button";
 import Loading from "../Util/Loading";
+import { Paper, Typography, Stack, Button, useTheme } from "@mui/material";
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -45,6 +45,7 @@ export default function SelectedUser(props) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const theme = useTheme();
 
   const openConfirm = () => {
     setShowConfirm(true);
@@ -108,45 +109,83 @@ export default function SelectedUser(props) {
   }
 
   return (
-    <>
-      <p>Name: {props?.userDetails?.Name}</p>
-      <p>Email: {props?.userDetails?.Email}</p>
-      <p>Phone: {props?.userDetails?.Phone}</p>
-      <p>Position: {props?.userDetails?.Position}</p>
-      <p>County: {props?.userDetails?.County}</p>
-      <p>Level: {props?.userDetails?.Level}</p>
-      <p>Role: {props?.userDetails?.Role}</p>
-      <p>Status: {props?.userDetails?.Status ? "Active" : "Disabled"}</p>
-      <p>Date Created: {formatDate(props?.userDetails?.createdAt)}</p>
-      <p>Date Updated: {formatDate(props?.userDetails?.updatedAt)}</p>
-
-      {props.role !== "Regular User" && props.role !== "Guest" && (
-        <div className="actions">
-          <h6
-            onClick={() => {
-              updateUser(props?.userDetails?.Status);
-            }}
-          >
-            {props?.userDetails?.Status ? "Deactivate" : "Activate"}
-          </h6>
-          <h6
-            onClick={() => {
-              setClicked(true);
-            }}
-          >
-            Update
-          </h6>
-          <h6
-            onClick={() => {
-              openConfirm();
-              // deleteUser();
-            }}
-          >
-            Delete
-          </h6>
-        </div>
-      )}
-
+    <Paper
+      elevation={2}
+      sx={{ p: 2, background: theme.palette.background.paper }}
+    >
+      <Stack spacing={1.2}>
+        <Typography
+          variant="h6"
+          fontWeight={600}
+          color={theme.palette.primary.main}
+        >
+          {props?.userDetails?.Name}
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary}>
+          <b>Email:</b> {props?.userDetails?.Email}
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary}>
+          <b>Phone:</b> {props?.userDetails?.Phone}
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary}>
+          <b>Position:</b> {props?.userDetails?.Position}
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary}>
+          <b>County:</b> {props?.userDetails?.County}
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary}>
+          <b>Level:</b> {props?.userDetails?.Level}
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary}>
+          <b>Role:</b> {props?.userDetails?.Role}
+        </Typography>
+        <Typography
+          variant="body2"
+          color={
+            props?.userDetails?.Status
+              ? theme.palette.success.main
+              : theme.palette.error.main
+          }
+        >
+          <b>Status:</b> {props?.userDetails?.Status ? "Active" : "Disabled"}
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary}>
+          <b>Date Created:</b> {formatDate(props?.userDetails?.createdAt)}
+        </Typography>
+        <Typography variant="body2" color={theme.palette.text.secondary}>
+          <b>Date Updated:</b> {formatDate(props?.userDetails?.updatedAt)}
+        </Typography>
+        {props.role !== "Regular User" && props.role !== "Guest" && (
+          <Stack direction="row" spacing={2} mt={2}>
+            <Button
+              variant="contained"
+              size="small"
+              color={props?.userDetails?.Status ? "warning" : "success"}
+              onClick={() => {
+                updateUser(props?.userDetails?.Status);
+              }}
+            >
+              {props?.userDetails?.Status ? "Deactivate" : "Activate"}
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => setClicked(true)}
+              size="small"
+            >
+              Update
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={() => openConfirm()}
+              size="small"
+            >
+              Delete
+            </Button>
+          </Stack>
+        )}
+      </Stack>
       {showConfirm && (
         <Confirm
           closeConfirm={closeConfirm}
@@ -155,7 +194,6 @@ export default function SelectedUser(props) {
           }}
         />
       )}
-
       {clicked && (
         <UpdatePopUp
           setClicked={setClicked}
@@ -164,7 +202,7 @@ export default function SelectedUser(props) {
           userId={props?.userDetails?.UserID}
         />
       )}
-    </>
+    </Paper>
   );
 }
 
@@ -187,7 +225,6 @@ const UpdatePopUp = (props) => {
         console.log(err);
       });
   }, []);
-
 
   const pos = [
     "",
@@ -345,13 +382,13 @@ const UpdatePopUp = (props) => {
                 ref={fname}
                 type="text"
                 label="First Name *"
-                value={(data?.Name)?.split(" ")[0]}
+                value={data?.Name?.split(" ")[0]}
               />
               <Input
                 ref={sname}
                 type="text"
                 label="Surname *"
-                value={(data?.Name)?.split(" ").slice(1).join(" ")}
+                value={data?.Name?.split(" ").slice(1).join(" ")}
               />
             </div>
             <div className="div2equal">

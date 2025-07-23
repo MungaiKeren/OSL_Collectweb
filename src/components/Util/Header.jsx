@@ -16,7 +16,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import wkwp_logo from "../../assets/imgs/wkwp_logo.png";
 import { jwtDecode } from "jwt-decode";
 
 export default function Header(props) {
@@ -61,16 +60,7 @@ export default function Header(props) {
 
   return (
     <>
-      <div className="header">
-        <div className="lt">
-          <FontAwesomeIcon
-            className="fa-bars"
-            onClick={() => {
-              setNav(true);
-            }}
-            icon={faBars}
-          />
-        </div>
+      <div className="header">        
         <p>
           <FontAwesomeIcon
             icon={faUserCircle}
@@ -91,21 +81,6 @@ export default function Header(props) {
   );
 }
 
-const UserPopup = (props) => {
-  return (
-    <div className="userPopup">
-      <h2>User Information</h2>
-      <p>Name: {props.details}</p>
-      <p>Email: {props.email}</p>
-      <p>Position: {props.position}</p>
-      <p>Role: {props.role}</p>
-      <p>Login Time: {props.login}</p>
-      <p>Logout Time: {props.logout}</p>
-      <button onClick={props.closePopup}>Close</button>
-    </div>
-  );
-};
-
 const MobileHeader = (props) => {
   const pathname = window.location.pathname.split("/");
 
@@ -118,8 +93,7 @@ const MobileHeader = (props) => {
         icon={faTimes}
         className="fa-times"
       />
-      <img src={wkwp_logo} alt="" />
-      <h1>MEL-MIS</h1>
+      <h1>OSL Collect</h1>
 
       <hr />
       <Item

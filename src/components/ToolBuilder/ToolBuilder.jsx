@@ -208,7 +208,12 @@ const Item = (props) => {
             {props.item.ToolName}
           </Typography>
         </Stack>
-        <Stack direction="row" spacing={2} mb={1}>
+        <Typography variant="caption" color={theme.palette.grey[400]}>
+          {date}
+        </Typography>
+      </Box>
+      <Box flex={1}>
+        <Stack direction="column" spacing={2} mb={1}>
           <Typography variant="body2" color={theme.palette.text.secondary}>
             <b>Data table:</b> {props.item.DataTableName}
           </Typography>
@@ -216,9 +221,6 @@ const Item = (props) => {
             <b>County:</b> {props.item.County}
           </Typography>
         </Stack>
-        <Typography variant="caption" color={theme.palette.grey[400]}>
-          {date}
-        </Typography>
       </Box>
       <Stack direction="row" spacing={1} alignItems="center">
         <IconButton

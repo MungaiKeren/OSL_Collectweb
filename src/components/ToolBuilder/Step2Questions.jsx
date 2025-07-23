@@ -11,6 +11,20 @@ import Loading from "../Util/Loading";
 import Input from "../Util/Input";
 import Select from "../Util/Select";
 import { useEffect, useRef, useState } from "react";
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  IconButton,
+  Stack,
+  Grid,
+  Divider,
+  useTheme,
+  Tooltip,
+  TextField,
+  MenuItem,
+} from "@mui/material";
 
 export default function Step2Questions(props) {
   const [error, setError] = useState("");
@@ -30,6 +44,7 @@ export default function Step2Questions(props) {
   const sdt = useRef();
   const dq = useRef();
   const mcdt = useRef();
+  const theme = useTheme();
 
   useEffect(() => {
     if (props.data) {
@@ -363,61 +378,119 @@ export default function Step2Questions(props) {
     }
 
     return (
-      <div
-        className="qitem"
-        style={{
-          backgroundColor: editing == params.item.ID ? "wheat" : "transparent",
+      <Paper
+        elevation={editing == params.item.ID ? 6 : 2}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          p: 2,
+          mb: 2,
+          background:
+            editing == params.item.ID
+              ? theme.palette.secondary.light
+              : theme.palette.background.paper,
+          border:
+            editing == params.item.ID
+              ? `2px solid ${theme.palette.secondary.main}`
+              : `1px solid ${theme.palette.grey[200]}`,
+          transition: "box-shadow 0.2s, border 0.2s, background 0.2s",
         }}
       >
-        <FontAwesomeIcon
-          onClick={() => {
-            deleteQuestion();
-          }}
-          icon={faTimes}
-          className="fa-times"
-        />
-        <FontAwesomeIcon
-          onClick={() => {
-            setEditing(params.item.ID);
-            setQType(getQType(params.item.QuestionType));
-          }}
-          icon={faEdit}
-          className="fa-edit"
-        />
-        <FontAwesomeIcon
-          onClick={() => {
-            moveCard(params.index, 1);
-          }}
-          icon={faAngleDoubleDown}
-          className="fa-movedown"
-        />
-        <FontAwesomeIcon
-          onClick={() => {
-            moveCard(params.index, -1);
-          }}
-          icon={faAngleDoubleUp}
-          className="fa-moveup"
-        />
-        <label>{index}</label>
-        <div>
-          <h3>{params.item.Question}</h3>
-          <p>{params.item.QuestionType}</p>
-        </div>
-        <div>
-          <h5>Required</h5>
-          <p>{params.item.Required}</p>
-        </div>
-        <div>
-          <h5>Data Type</h5>
-          <p>{params.item.DataType}</p>
-        </div>
-        <div>
-          {chs != "" && <h5>Choices</h5>}
-          <p>{chs}</p>
-        </div>
-
-        <h5></h5>
-      </div>
+        <Stack
+          direction="column"
+          spacing={1}
+          alignItems="center"
+          sx={{ mr: 2 }}
+        >
+          <Tooltip title="Delete">
+            <IconButton onClick={deleteQuestion} color="error" size="small">
+              <FontAwesomeIcon icon={faTimes} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Edit">
+            <IconButton
+              onClick={() => {
+                setEditing(params.item.ID);
+                setQType(getQType(params.item.QuestionType));
+              }}
+              color="primary"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faEdit} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Move Down">
+            <IconButton
+              onClick={() => {
+                moveCard(params.index, 1);
+              }}
+              color="secondary"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faAngleDoubleDown} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Move Up">
+            <IconButton
+              onClick={() => {
+                moveCard(params.index, -1);
+              }}
+              color="secondary"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faAngleDoubleUp} />
+            </IconButton>
+          </Tooltip>
+        </Stack>
+        <Box sx={{ flex: 1 }}>
+          <Stack direction="row" alignItems="center" spacing={2} mb={1}>
+            <Typography
+              variant="subtitle2"
+              color={theme.palette.text.secondary}
+            >
+              #{params.index + 1}
+            </Typography>
+            <Typography
+              variant="h6"
+              color={theme.palette.primary.main}
+              fontWeight={600}
+            >
+              {params.item.Question}
+            </Typography>
+            <Typography variant="body2" color={theme.palette.text.secondary}>
+              {params.item.QuestionType}
+            </Typography>
+          </Stack>
+          <Grid container spacing={1}>
+            <Grid item xs={6} sm={3}>
+              <Typography
+                variant="caption"
+                color={theme.palette.text.secondary}
+              >
+                <b>Required:</b> {params.item.Required}
+              </Typography>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+              <Typography
+                variant="caption"
+                color={theme.palette.text.secondary}
+              >
+                <b>Data Type:</b> {params.item.DataType}
+              </Typography>
+            </Grid>
+            {params.item.Choices && params.item.Choices.length > 0 && (
+              <Grid item xs={12} sm={6}>
+                <Typography
+                  variant="caption"
+                  color={theme.palette.text.secondary}
+                >
+                  <b>Choices:</b> {params.item.Choices.join(", ")}
+                </Typography>
+              </Grid>
+            )}
+          </Grid>
+        </Box>
+      </Paper>
     );
   };
 
@@ -529,466 +602,695 @@ export default function Step2Questions(props) {
   };
 
   return (
-    <div>
-      <h4>Form Questions</h4>
-      <hr />
-
-      <div className="flist">
+    <Box>
+      <Typography
+        variant="h6"
+        fontWeight={600}
+        color={theme.palette.primary.main}
+        mb={1}
+      >
+        Form Questions
+      </Typography>
+      <Divider sx={{ mb: 2 }} />
+      <Box>
         {body &&
           body?.length > 0 &&
-          body?.map((item, i) => {
-            return <QItem key={i} id={item.Order} item={item} index={i} />;
-          })}
-      </div>
-      <h6>{error}</h6>
+          body?.map((item, i) => (
+            <QItem key={i} id={item.Order} item={item} index={i} />
+          ))}
+      </Box>
+      {error && (
+        <Typography color="error" variant="body2" mt={1}>
+          {error}
+        </Typography>
+      )}
+      {/* Add/Edit Question Forms */}
       {qtype === "Q1" && (
-        <div className="simple">
-          <h4>Short Answer Question</h4>
-          <FontAwesomeIcon
-            onClick={() => {
-              setQType(null);
-              setEditing(null);
-            }}
-            className="fa-times"
-            icon={faTimes}
-          />
-          <div className="div12">
-            <Input
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Question
-                  : ""
-              }
-              ref={sq}
-              label="Question"
-            />
-            <Select
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Required
-                  : "No"
-              }
-              ref={rq}
-              label="Required"
-              data={["Yes", "No"]}
-            />
-            <Select
-              ref={sdt}
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.DataType
-                  : "TEXT"
-              }
-              label="Data Type"
-              data={["TEXT", "INTEGER", "DECIMAL", "DATE"]}
-            />
-          </div>
-          <p
-            onClick={() => {
-              addSimpleQuestion();
-            }}
+        <Paper sx={{ p: 2, mt: 2, mb: 2 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {editing == null ? "Add Question" : "Update Question"}
-          </p>
-        </div>
+            <Typography
+              variant="subtitle1"
+              fontWeight={600}
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Short Answer Question
+            </Typography>
+            <IconButton
+              onClick={() => {
+                setQType(null);
+                setEditing(null);
+              }}
+              color="error"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </IconButton>
+          </Stack>
+          <Grid container spacing={2} mt={1}>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="Question"
+                inputRef={sq}
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Question
+                    : ""
+                }
+                fullWidth
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 3 }}>
+              <TextField
+                label="Required"
+                inputRef={rq}
+                select
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Required
+                    : "No"
+                }
+                fullWidth
+                size="small"
+              >
+                {["Yes", "No"].map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 3 }}>
+              <TextField
+                label="Data Type"
+                inputRef={sdt}
+                select
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.DataType
+                    : "TEXT"
+                }
+                fullWidth
+                size="small"
+              >
+                {["TEXT", "INTEGER", "DECIMAL", "DATE"].map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <Button
+                onClick={addSimpleQuestion}
+                variant="contained"
+                color="secondary"
+                sx={{ fontWeight: 600 }}
+              >
+                {editing == null ? "Add Question" : "Update Question"}
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
       {qtype === "Q2" && (
-        <div className="simple">
-          <h4>Long Answer Question</h4>
-          <FontAwesomeIcon
-            onClick={() => {
-              setQType(null);
-              setEditing(null);
-            }}
-            className="fa-times"
-            icon={faTimes}
-          />
-          <div className="div12">
-            <Input
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Question
-                  : ""
-              }
-              ref={lq}
-              label="Question"
-            />
-            <Select
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Required
-                  : "No"
-              }
-              ref={rq}
-              label="Required"
-              data={["Yes", "No"]}
-            />
-          </div>
-
-          <p
-            onClick={() => {
-              addLongQuestion();
-            }}
+        <Paper sx={{ p: 2, mt: 2, mb: 2 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {editing == null ? "Add Question" : "Update Question"}
-          </p>
-        </div>
+            <Typography
+              variant="subtitle1"
+              fontWeight={600}
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Long Answer Question
+            </Typography>
+            <IconButton
+              onClick={() => {
+                setQType(null);
+                setEditing(null);
+              }}
+              color="error"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </IconButton>
+          </Stack>
+          <Grid container spacing={2} mt={1}>
+            <Grid size={{ xs: 12, sm: 8 }}>
+              <TextField
+                label="Question"
+                inputRef={lq}
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Question
+                    : ""
+                }
+                fullWidth
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 4 }}>
+              <TextField
+                label="Required"
+                inputRef={rq}
+                select
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Required
+                    : "No"
+                }
+                fullWidth
+                size="small"
+              >
+                {["Yes", "No"].map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <Button
+                onClick={addLongQuestion}
+                variant="contained"
+                color="secondary"
+                sx={{ fontWeight: 600 }}
+              >
+                {editing == null ? "Add Question" : "Update Question"}
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
       {qtype === "Q3" && (
-        <div className="simple">
-          <h4>Single Choice Question</h4>
-          <FontAwesomeIcon
-            onClick={() => {
-              setQType(null);
-              setEditing(null);
-            }}
-            className="fa-times"
-            icon={faTimes}
-          />
-          <div className="div12">
-            <Input
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Question
-                  : ""
-              }
-              ref={mcq}
-              label="Question"
-            />
-            <Select
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Required
-                  : "No"
-              }
-              ref={rq}
-              label="Required"
-              data={["Yes", "No"]}
-            />
-            <Select
-              ref={mcdt}
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.DataType
-                  : "TEXT"
-              }
-              label="Data Type"
-              data={["TEXT", "INTEGER", "DECIMAL", "DATE"]}
-            />
-          </div>
-
-          <div className="chlist">
-            {choices.length > 0 &&
-              choices.map((item, i) => {
-                return <Choice key={i} item={item} index={i} />;
-              })}
-          </div>
-
-          <div className="div1auto">
-            <Input ref={ch} label="Add Option" />
-            <FontAwesomeIcon
-              onClick={() => {
-                const q = ch.current.value;
-                if (q !== "") {
-                  setChoices([...choices, q]);
-                }
-              }}
-              className="add"
-              icon={faPlusSquare}
-            />
-          </div>
-
-          <p
-            onClick={() => {
-              addSCQuestion();
-            }}
+        <Paper sx={{ p: 2, mt: 2, mb: 2 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {editing == null ? "Add Question" : "Update Question"}
-          </p>
-        </div>
+            <Typography
+              variant="subtitle1"
+              fontWeight={600}
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Single Choice Question
+            </Typography>
+            <IconButton
+              onClick={() => {
+                setQType(null);
+                setEditing(null);
+              }}
+              color="error"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </IconButton>
+          </Stack>
+          <Grid container spacing={2} mt={1}>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="Question"
+                inputRef={mcq}
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Question
+                    : ""
+                }
+                fullWidth
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 3 }}>
+              <TextField
+                label="Required"
+                inputRef={rq}
+                select
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Required
+                    : "No"
+                }
+                fullWidth
+                size="small"
+              >
+                {["Yes", "No"].map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 3 }}>
+              <TextField
+                label="Data Type"
+                inputRef={mcdt}
+                select
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.DataType
+                    : "TEXT"
+                }
+                fullWidth
+                size="small"
+              >
+                {["TEXT", "INTEGER", "DECIMAL", "DATE"].map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                flexWrap="wrap"
+              >
+                {choices.length > 0 &&
+                  choices.map((item, i) => (
+                    <Paper
+                      key={i}
+                      sx={{
+                        px: 2,
+                        py: 0.5,
+                        mr: 1,
+                        mb: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        background: theme.palette.grey[100],
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        sx={{ mr: 1, color: theme.palette.primary.main }}
+                      >
+                        {item}
+                      </Typography>
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => {
+                          const newArray = [...choices];
+                          newArray.splice(i, 1);
+                          setChoices(newArray);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </IconButton>
+                    </Paper>
+                  ))}
+                <TextField
+                  inputRef={ch}
+                  label="Add Option"
+                  size="small"
+                  sx={{ minWidth: 120 }}
+                />
+                <IconButton
+                  color="secondary"
+                  onClick={() => {
+                    const q = ch.current.value;
+                    if (q !== "") {
+                      setChoices([...choices, q]);
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlusSquare} />
+                </IconButton>
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                onClick={addSCQuestion}
+                variant="contained"
+                color="secondary"
+                sx={{ fontWeight: 600 }}
+              >
+                {editing == null ? "Add Question" : "Update Question"}
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
       {qtype === "Q4" && (
-        <div className="simple">
-          <h4>Multiple Choice Question</h4>
-          <FontAwesomeIcon
-            onClick={() => {
-              setQType(null);
-              setEditing(null);
-            }}
-            className="fa-times"
-            icon={faTimes}
-          />
-          <div className="div12">
-            <Input
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Question
-                  : ""
-              }
-              ref={mcq}
-              label="Question"
-            />
-            <Select
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Required
-                  : "No"
-              }
-              ref={rq}
-              label="Required"
-              data={["Yes", "No"]}
-            />
-            <Select
-              ref={mcdt}
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.DataType
-                  : "TEXT"
-              }
-              label="Data Type"
-              data={["TEXT", "INTEGER", "DECIMAL", "DATE"]}
-            />
-          </div>
-
-          <div className="chlist">
-            {choices.length > 0 &&
-              choices.map((item, i) => {
-                return <Choice key={i} item={item} index={i} />;
-              })}
-          </div>
-
-          <div className="div1auto">
-            <Input ref={ch} label="Add Option" />
-            <FontAwesomeIcon
-              onClick={() => {
-                const q = ch.current.value;
-                if (q !== "") {
-                  setChoices([...choices, q]);
-                }
-              }}
-              className="add"
-              icon={faPlusSquare}
-            />
-          </div>
-
-          <p
-            onClick={() => {
-              addMCQuestion();
-            }}
+        <Paper sx={{ p: 2, mt: 2, mb: 2 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {editing == null ? "Add Question" : "Update Question"}
-          </p>
-        </div>
+            <Typography
+              variant="subtitle1"
+              fontWeight={600}
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Multiple Choice Question
+            </Typography>
+            <IconButton
+              onClick={() => {
+                setQType(null);
+                setEditing(null);
+              }}
+              color="error"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </IconButton>
+          </Stack>
+          <Grid container spacing={2} mt={1}>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                label="Question"
+                inputRef={mcq}
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Question
+                    : ""
+                }
+                fullWidth
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 3 }}>
+              <TextField
+                label="Required"
+                inputRef={rq}
+                select
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Required
+                    : "No"
+                }
+                fullWidth
+                size="small"
+              >
+                {["Yes", "No"].map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 3 }}>
+              <TextField
+                label="Data Type"
+                inputRef={mcdt}
+                select
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.DataType
+                    : "TEXT"
+                }
+                fullWidth
+                size="small"
+              >
+                {["TEXT", "INTEGER", "DECIMAL", "DATE"].map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                flexWrap="wrap"
+              >
+                {choices.length > 0 &&
+                  choices.map((item, i) => (
+                    <Paper
+                      key={i}
+                      sx={{
+                        px: 2,
+                        py: 0.5,
+                        mr: 1,
+                        mb: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        background: theme.palette.grey[100],
+                      }}
+                    >
+                      <Typography
+                        variant="body2"
+                        sx={{ mr: 1, color: theme.palette.primary.main }}
+                      >
+                        {item}
+                      </Typography>
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={() => {
+                          const newArray = [...choices];
+                          newArray.splice(i, 1);
+                          setChoices(newArray);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </IconButton>
+                    </Paper>
+                  ))}
+                <TextField
+                  inputRef={ch}
+                  label="Add Option"
+                  size="small"
+                  sx={{ minWidth: 120 }}
+                />
+                <IconButton
+                  color="secondary"
+                  onClick={() => {
+                    const q = ch.current.value;
+                    if (q !== "") {
+                      setChoices([...choices, q]);
+                    }
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPlusSquare} />
+                </IconButton>
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                onClick={addMCQuestion}
+                variant="contained"
+                color="secondary"
+                sx={{ fontWeight: 600 }}
+              >
+                {editing == null ? "Add Question" : "Update Question"}
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
       {qtype === "Q5" && (
-        <div className="simple">
-          <h4>Date Question</h4>
-          <FontAwesomeIcon
-            onClick={() => {
-              setQType(null);
-              setEditing(null);
-            }}
-            className="fa-times"
-            icon={faTimes}
-          />
-          <div className="div12">
-            <Input
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Question
-                  : ""
-              }
-              ref={dq}
-              label="Question"
-            />
-            <Select
-              value={
-                editing != null
-                  ? body[
-                      body
-                        .map((e) => {
-                          return e.ID;
-                        })
-                        .indexOf(editing)
-                    ]?.Required
-                  : "No"
-              }
-              ref={rq}
-              label="Required"
-              data={["Yes", "No"]}
-            />
-          </div>
-
-          <p
-            onClick={() => {
-              addDateQuestion();
-            }}
+        <Paper sx={{ p: 2, mt: 2, mb: 2 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {editing == null ? "Add Question" : "Update Question"}
-          </p>
-        </div>
+            <Typography
+              variant="subtitle1"
+              fontWeight={600}
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Date Question
+            </Typography>
+            <IconButton
+              onClick={() => {
+                setQType(null);
+                setEditing(null);
+              }}
+              color="error"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </IconButton>
+          </Stack>
+          <Grid container spacing={2} mt={1}>
+            <Grid size={{ xs: 12, sm: 8 }}>
+              <TextField
+                label="Question"
+                inputRef={dq}
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Question
+                    : ""
+                }
+                fullWidth
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 4 }}>
+              <TextField
+                label="Required"
+                inputRef={rq}
+                select
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Required
+                    : "No"
+                }
+                fullWidth
+                size="small"
+              >
+                {["Yes", "No"].map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                onClick={addDateQuestion}
+                variant="contained"
+                color="secondary"
+                sx={{ fontWeight: 600 }}
+              >
+                {editing == null ? "Add Question" : "Update Question"}
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
       {qtype === "Q6" && (
-        <div className="simple">
-          <h4>Location Question (Latitude,Longitude)</h4>
-          <FontAwesomeIcon
-            onClick={() => {
-              setQType(null);
-              setEditing(null);
-            }}
-            className="fa-times"
-            icon={faTimes}
-          />
-          <Input
-            value={
-              editing != null
-                ? body[
-                    body
-                      .map((e) => {
-                        return e.ID;
-                      })
-                      .indexOf(editing)
-                  ]?.Question
-                : ""
-            }
-            ref={mcq}
-            label="Question"
-          />
-
-          <p
-            onClick={() => {
-              addLocationQuestion();
-            }}
+        <Paper sx={{ p: 2, mt: 2, mb: 2 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
           >
-            {editing == null ? "Add Question" : "Update Question"}
-          </p>
-        </div>
+            <Typography
+              variant="subtitle1"
+              fontWeight={600}
+              sx={{ color: theme.palette.primary.main }}
+            >
+              Location Question (Latitude,Longitude)
+            </Typography>
+            <IconButton
+              onClick={() => {
+                setQType(null);
+                setEditing(null);
+              }}
+              color="error"
+              size="small"
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </IconButton>
+          </Stack>
+          <Grid container spacing={2} mt={1}>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                label="Question"
+                inputRef={mcq}
+                defaultValue={
+                  editing != null
+                    ? body[body.map((e) => e.ID).indexOf(editing)]?.Question
+                    : ""
+                }
+                fullWidth
+                size="small"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                onClick={addLocationQuestion}
+                variant="contained"
+                color="secondary"
+                sx={{ fontWeight: 600 }}
+              >
+                {editing == null ? "Add Question" : "Update Question"}
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
       )}
-      <hr />
-      <div className="choices">
-        <div
-          onClick={() => {
-            setQType("Q1");
-          }}
-        >
-          <FontAwesomeIcon className="fas" icon={faPlusCircle} />
-          <p>Short Answer Questions</p>
-        </div>
-        <div
-          onClick={() => {
-            setQType("Q2");
-          }}
-        >
-          <FontAwesomeIcon className="fas" icon={faPlusCircle} />
-          <p>Long Answer Questions</p>
-        </div>
-        <div
-          onClick={() => {
-            setQType("Q3");
-          }}
-        >
-          <FontAwesomeIcon className="fas" icon={faPlusCircle} />
-          <p>Single Choice Questions</p>
-        </div>
-        <div
-          onClick={() => {
-            setQType("Q4");
-          }}
-        >
-          <FontAwesomeIcon className="fas" icon={faPlusCircle} />
-          <p>Multiple Choice Questions</p>
-        </div>
-        <div
-          onClick={() => {
-            setQType("Q5");
-          }}
-        >
-          <FontAwesomeIcon className="fas" icon={faPlusCircle} />
-          <p>Date Question</p>
-        </div>
-        <div
-          onClick={() => {
-            setQType("Q6");
-          }}
-        >
-          <FontAwesomeIcon className="fas" icon={faPlusCircle} />
-          <p>Location</p>
-        </div>
-      </div>
-
+      <Divider sx={{ my: 3 }} />
+      <Grid container spacing={2} justifyContent="center">
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="primary"
+            startIcon={<FontAwesomeIcon className="fas" icon={faPlusCircle} />}
+            onClick={() => setQType("Q1")}
+            sx={{ mb: 1, fontWeight: 600 }}
+          >
+            Short Answer Questions
+          </Button>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="primary"
+            startIcon={<FontAwesomeIcon className="fas" icon={faPlusCircle} />}
+            onClick={() => setQType("Q2")}
+            sx={{ mb: 1, fontWeight: 600 }}
+          >
+            Long Answer Questions
+          </Button>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="primary"
+            startIcon={<FontAwesomeIcon className="fas" icon={faPlusCircle} />}
+            onClick={() => setQType("Q3")}
+            sx={{ mb: 1, fontWeight: 600 }}
+          >
+            Single Choice Questions
+          </Button>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="primary"
+            startIcon={<FontAwesomeIcon className="fas" icon={faPlusCircle} />}
+            onClick={() => setQType("Q4")}
+            sx={{ mb: 1, fontWeight: 600 }}
+          >
+            Multiple Choice Questions
+          </Button>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="primary"
+            startIcon={<FontAwesomeIcon className="fas" icon={faPlusCircle} />}
+            onClick={() => setQType("Q5")}
+            sx={{ mb: 1, fontWeight: 600 }}
+          >
+            Date Question
+          </Button>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            color="primary"
+            startIcon={<FontAwesomeIcon className="fas" icon={faPlusCircle} />}
+            onClick={() => setQType("Q6")}
+            sx={{ mb: 1, fontWeight: 600 }}
+          >
+            Location
+          </Button>
+        </Grid>
+      </Grid>
       {loading && <Loading />}
-    </div>
+    </Box>
   );
 }

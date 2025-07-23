@@ -1,24 +1,36 @@
-import {
-  faArrowRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import "../../Styles/dataentry.scss";
-import Button from "../Util/Button";
-import Input from "../Util/Input";
 import Loading from "../Util/Loading";
+import Input from "../Util/Input";
 import Select from "../Util/Select";
 import Step2Questions from "./Step2Questions";
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  Stack,
+  Divider,
+  useTheme,
+  TextField,
+  Select as MUISelect,
+  MenuItem,
+  Grid,
+  Button as MUIButton,
+  CircularProgress,
+} from "@mui/material";
 
 export default function NewTool(props) {
   const [active, setActive] = useState("Tool Details");
   const [editing, setEditing] = useState(null);
   const [loading, setLoading] = useState(null);
   const [data, setData] = useState(null);
+  const theme = useTheme();
 
   useEffect(() => {
     const e = localStorage.getItem("tsediting");
-
     setEditing(e);
   }, [active]);
 
@@ -41,47 +53,90 @@ export default function NewTool(props) {
   }, [editing, active]);
 
   return (
-    <div className="toolbuilder">
-      <div className="new">
-        <div className="topbar">
-          <h4>New Data Collection Tool</h4>
-          <p
+    <Box
+      sx={{
+        p: { xs: 1, md: 3 },
+        background: theme.palette.background.paper,
+        minHeight: "100vh",
+      }}
+    >
+      <Paper sx={{ p: 2, mb: 3 }} elevation={2}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography
+            variant="h6"
+            fontWeight={600}
+            color={theme.palette.primary.main}
+          >
+            New Data Collection Tool
+          </Typography>
+          <Button
+            variant="text"
+            color="secondary"
             onClick={() => {
               window.location.href = "/buildtool";
             }}
+            startIcon={<FontAwesomeIcon icon={faArrowRight} />}
           >
-            <FontAwesomeIcon icon={faArrowRight} /> Tools
-          </p>
-        </div>
-        <div className="rmf">
-          <div className="bar">
-            <Item txt="Tool Details" active={active} setActive={setActive} />
-            <Item
-              txt="Data Collection Questions"
-              active={active}
-              setActive={setActive}
-            />
-          </div>
-          {active === "Tool Details" && (
-            <Step1 data={data} setActive={setActive} editing={editing} />
-          )}
-          {active === "Data Collection Questions" && (
-            <>
-              {editing !== null ? (
-                <Step2Questions
-                  data={data}
-                  setActive={setActive}
-                  editing={editing}
-                />
-              ) : (
-                <Error />
-              )}
-            </>
-          )}
-          {loading && <Loading />}
-        </div>
-      </div>
-    </div>
+            Tools
+          </Button>
+        </Stack>
+        <Divider sx={{ my: 2 }} />
+        <Stack direction="row" mb={3}>
+          <Button
+            variant={active === "Tool Details" ? "contained" : "outlined"}
+            color="secondary"
+            onClick={() => setActive("Tool Details")}
+            sx={{
+              backgroundColor: "secondary",
+              color: active === "Tool Details" ? "white" : "primary",
+              fontWeight: 600,
+              borderRadius: 0,
+              width: "50%",
+            }}
+          >
+            Tool Details
+          </Button>
+          <Button
+            variant={
+              active === "Data Collection Questions" ? "contained" : "outlined"
+            }
+            color="secondary"
+            onClick={() => setActive("Data Collection Questions")}
+            sx={{
+              backgroundColor: "secondary",
+              color:
+                active === "Data Collection Questions" ? "white" : "primary",
+              fontWeight: 600,
+              borderRadius: 0,
+              width: "50%",
+            }}
+          >
+            Data Collection Questions
+          </Button>
+        </Stack>
+        {active === "Tool Details" && (
+          <Step1 data={data} setActive={setActive} editing={editing} />
+        )}
+        {active === "Data Collection Questions" && (
+          <>
+            {editing !== null ? (
+              <Step2Questions
+                data={data}
+                setActive={setActive}
+                editing={editing}
+              />
+            ) : (
+              <Error />
+            )}
+          </>
+        )}
+        {loading && <Loading />}
+      </Paper>
+    </Box>
   );
 }
 
@@ -102,28 +157,17 @@ const Step1 = (props) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState("");
   const [body, setBody] = useState({
-    ToolName: null,
-    County: null,
-    Description: null,
-    DataTableName: null,
-    Status: null,
+    ToolName: props?.data?.ToolName || "",
+    County: props?.data?.County || "",
+    Description: props?.data?.Description || "",
+    DataTableName: props?.data?.DataTableName || "",
+    Status: props?.data?.Status || "Active",
   });
-  const ToolName = useRef();
-  const County = useRef();
-  const Description = useRef();
-  const DataTableName = useRef();
-  const Status = useRef();
+  const theme = useTheme();
 
   const createDocument = (e) => {
     setError("");
-    let d = body;
-    d.ToolName = ToolName.current.value;
-    d.County = County.current.value;
-    d.Description = Description.current.value;
-    d.DataTableName = DataTableName.current.value;
-    d.Status = Status.current.value;
-    setBody(d);
-
+    let d = { ...body };
     const chck = Object.values(d);
     const cols = Object.keys(d);
     let valid = true;
@@ -156,7 +200,6 @@ const Step1 = (props) => {
       })
       .then((data) => {
         setLoading(false);
-        console.log(data);
         if (data.success) {
           setError(data.success);
           localStorage.setItem("tsediting", data.ID);
@@ -168,7 +211,6 @@ const Step1 = (props) => {
         }
       })
       .catch((err) => {
-        console.log(err);        
         setLoading(false);
         setError("Oops! Something went wrong!");
       });
@@ -177,24 +219,31 @@ const Step1 = (props) => {
   function isValidTableName(name) {
     // Regular expression to match valid PostgreSQL table names
     const tableNameRegex = /^[a-zA-Z_][a-zA-Z0-9_]*$/;
-
     return tableNameRegex.test(name);
   }
 
   return (
-    <div>
-      <div className="div2equal">
-        <Input
-          ref={ToolName}
-          value={props?.data?.ToolName}
+    <Grid container spacing={2}>
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <TextField
           label="Tool Name *"
+          value={body.ToolName}
+          onChange={(e) => setBody({ ...body, ToolName: e.target.value })}
+          fullWidth
+          required
+          size="small"
         />
-
-        <Select
-          ref={County}
-          value={props?.data?.County}
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <TextField
           label="County"
-          data={[
+          value={body.County}
+          onChange={(e) => setBody({ ...body, County: e.target.value })}
+          select
+          fullWidth
+          size="small"
+        >
+          {[
             "",
             "Bungoma",
             "Busia",
@@ -205,35 +254,85 @@ const Step1 = (props) => {
             "Migori",
             "Siaya",
             "All",
-          ]}
+          ].map((option, idx) => (
+            <MenuItem key={idx} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Grid>
+      <Grid size={{ xs: 12 }}>
+        <TextField
+          label="Tool Description *"
+          value={body.Description}
+          onChange={(e) => setBody({ ...body, Description: e.target.value })}
+          fullWidth
+          required
+          size="small"
+          multiline
+          minRows={3}
         />
-      </div>
-
-      <Input
-        ref={Description}
-        value={props?.data?.Description}
-        label="Tool Description *"
-        type="textarea"
-      />
-      <div className="div2equal">
-        <Input
-          ref={DataTableName}
-          value={props?.data?.DataTableName}
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <TextField
           label="Data Table Name (cannot have special characters) *"
+          value={body.DataTableName}
+          onChange={(e) => setBody({ ...body, DataTableName: e.target.value })}
+          fullWidth
+          required
+          size="small"
         />
-        <Select
-          ref={Status}
-          value={props?.data?.Status}
+      </Grid>
+      <Grid size={{ xs: 12, sm: 6 }}>
+        <TextField
           label="Form Status"
-          data={["Active", "Inactive"]}
-        />
-      </div>
-
-      <h6>{error}</h6>
-      <Button handleClick={createDocument} value="Submit" />
-      <br />
-      {loading && <Loading />}
-    </div>
+          value={body.Status}
+          onChange={(e) => setBody({ ...body, Status: e.target.value })}
+          select
+          fullWidth
+          size="small"
+        >
+          {["Active", "Inactive"].map((option, idx) => (
+            <MenuItem key={idx} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
+      </Grid>
+      <Grid size={{ xs: 12 }}>
+        {error && (
+          <Typography color="error" variant="body2">
+            {error}
+          </Typography>
+        )}
+      </Grid>
+      <Grid
+        size={{ xs: 12 }}
+        sx={{ display: "flex", justifyContent: "center" }}
+      >
+        <MUIButton
+          onClick={createDocument}
+          variant="contained"
+          color="secondary"          
+          sx={{
+            fontWeight: 600,
+            backgroundColor: "secondary",
+            color: "white",
+            px: 5
+          }}
+        >
+          Submit
+        </MUIButton>
+      </Grid>
+      {loading && (
+        <Grid
+          size={{ xs: 12 }}
+          sx={{ display: "flex", justifyContent: "center", mt: 2 }}
+        >
+          <CircularProgress />
+        </Grid>
+      )}
+    </Grid>
   );
 };
 

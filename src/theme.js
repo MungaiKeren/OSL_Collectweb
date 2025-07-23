@@ -68,6 +68,28 @@ const theme = createTheme({
         },
       },
     },
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: "#fff", // or theme.palette.background.paper
+          color: "#23263a", // or theme.palette.text.primary
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          color: "#23263a", // or theme.palette.text.primary
+          "&.Mui-selected": {
+            backgroundColor: "#ffb400", // or theme.palette.secondary.light
+            color: "#23263a",
+          },
+          "&.Mui-selected:hover": {
+            backgroundColor: "#ffe082", // or theme.palette.accent.light
+          },
+        },
+      },
+    },
   },
 });
 

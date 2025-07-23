@@ -1,32 +1,29 @@
 import React, { useState } from "react";
-import "../../Styles/userhome.scss";
-import MUsers from "./MUsers";
 import PortalUsers from "./PortalUsers";
+import { Box, Typography, Button, ButtonGroup } from "@mui/material";
 
 export default function UserHome(props) {
   const [active, setActive] = useState("System Users");
 
   return (
-    <div className="userhome">
-      <div className="vtop">
-        <Item txt="System Users" active={active} setActive={setActive} />
-        {/* <Item txt="Mobile Users" active={active} setActive={setActive} /> */}
-      </div>
-      {active === "System Users" && <PortalUsers role={props.role}/>}
-      {active === "Mobile Users" && <MUsers />}
-    </div>
+    <Box sx={{ p: 2 }}>
+      <Box>
+        <ButtonGroup variant="outlined">
+          <Button
+            variant={active === "System Users" ? "contained" : "outlined"}
+            onClick={() => setActive("System Users")}
+            color="secondary"
+            sx={{
+              backgroundColor: "secondary",
+              color: "#fff",
+              "&:hover": { backgroundColor: "secondary.dark" },
+            }}
+          >
+            System Users
+          </Button>
+        </ButtonGroup>
+      </Box>
+      {active === "System Users" && <PortalUsers role={props.role} />}
+    </Box>
   );
 }
-
-const Item = (props) => {
-  return (
-    <div
-      onClick={() => {
-        props.setActive(props.txt);
-      }}
-      className={props.active === props.txt ? "vactive" : "vitem"}
-    >
-      <p>{props.txt}</p>
-    </div>
-  );
-};

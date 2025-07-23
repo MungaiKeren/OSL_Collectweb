@@ -17,16 +17,20 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import { useTheme } from "@mui/material/styles";
+import Divider from "@mui/material/Divider";
 
 export default function Header(props) {
   const [nav, setNav] = useState(false);
   const [details, setDetails] = useState("");
   const [login, setLogin] = useState("");
   const [logout, setLogout] = useState("");
-  const [showUserPopup, setShowUserPopup] = useState(false);
-  const [email, setEmail] = useState("");
-  const [position, setPosition] = useState("");
-  const [role, setRole] = useState("");
+  const theme = useTheme();
   useEffect(() => {
     const token = localStorage.getItem("gdfhgfhtkngdfhgfhtkn");
 
@@ -39,9 +43,6 @@ export default function Header(props) {
           const lg = convertTime(decoded?.iat).split("GMT")[0];
           const lo = convertTime(decoded?.exp).split("GMT")[0];
           setDetails(decoded?.Name);
-          setEmail(decoded?.Email);
-          setPosition(decoded?.Position);
-          setRole(decoded?.Role);
           setLogin(lg.substring(lg.length - 9, lg.length));
           setLogout(lo.substring(lo.length - 9, lo.length));
         }
@@ -60,42 +61,79 @@ export default function Header(props) {
 
   return (
     <>
-      <div className="header">        
-        <p>
-          <FontAwesomeIcon
-            icon={faUserCircle}
-            className="user"
-            onClick={() => setShowUserPopup(true)}
-          />
-          {details}
-          <span>
-            <b> Login Time: </b> {login}
-          </span>
-          <span>
-            <b> Logout Time: </b> {logout}
-          </span>
-        </p>
-      </div>
+      <AppBar
+        position="static"
+        sx={{
+          background: theme.palette.background.paper,
+          color: theme.palette.secondary.dark,
+          boxShadow: "none",
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="user"
+            sx={{ mr: 2 }}
+          >
+            <FontAwesomeIcon icon={faUserCircle} />
+          </IconButton>
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{ flexGrow: 1, fontWeight: 500 }}
+          >
+            {details}
+          </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Typography
+              variant="body2"
+              sx={{ color: theme.palette.secondary.dark }}
+            >
+              <b>Login Time:</b> {login}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{ color: theme.palette.secondary.dark }}
+            >
+              <b>Logout Time:</b> {logout}
+            </Typography>
+          </Box>
+        </Toolbar>
+      </AppBar>
       {nav && <MobileHeader setNav={setNav} />}
     </>
   );
 }
 
 const MobileHeader = (props) => {
+  const theme = useTheme();
   const pathname = window.location.pathname.split("/");
 
   return (
-    <div className="mobheader">
-      <FontAwesomeIcon
-        onClick={() => {
-          props.setNav(false);
-        }}
-        icon={faTimes}
-        className="fa-times"
-      />
-      <h1>OSL Collect</h1>
-
-      <hr />
+    <Box
+      sx={{
+        background: theme.palette.background.paper,
+        color: theme.palette.secondary.dark,
+        minHeight: "100vh",
+        p: 2,
+      }}
+    >
+      <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+        <IconButton
+          onClick={() => {
+            props.setNav(false);
+          }}
+          sx={{ color: theme.palette.text.primary }}
+        >
+          <FontAwesomeIcon icon={faTimes} />
+        </IconButton>
+        <Typography variant="h6" sx={{ flexGrow: 1, ml: 2, fontWeight: 600 }}>
+          OSL Collect
+        </Typography>
+      </Box>
+      <Divider sx={{ mb: 2, background: theme.palette.grey[300] }} />
       <Item
         txt="Home"
         url="/"
@@ -170,7 +208,6 @@ const MobileHeader = (props) => {
         options={[]}
         showing={props.showing}
       />
-
       <Item
         url="/wp"
         txt="Workplans"
@@ -207,7 +244,7 @@ const MobileHeader = (props) => {
         options={[]}
         showing={props.showing}
       />
-    </div>
+    </Box>
   );
 };
 
@@ -223,7 +260,7 @@ const Item = (params) => {
           window.location.href = "/login";
         }
       }}
-      onMouseEnter={() => { }}
+      onMouseEnter={() => {}}
       className={params.link === params.active ? "active" : "item"}
     >
       <FontAwesomeIcon icon={params.icon} />

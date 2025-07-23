@@ -7,13 +7,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import "../../Styles/users.scss";
-import Button from "../Util/Button";
+// import Button from "../Util/Button";
 import Input from "../Util/Input";
 import Loading from "../Util/Loading";
 import Pagination from "../Util/Pagination";
 import Select from "../Util/Select";
 import SelectedUser from "./SelectedUser";
 import UserBox from "./UserBox";
+import {
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  TextField,
+  Divider,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Grid,
+  Paper,
+  MenuItem,
+} from "@mui/material";
 
 export default function PortalUsers(props) {
   const [offset, setOffset] = useState(0);
@@ -92,22 +108,32 @@ export default function PortalUsers(props) {
   }
 
   return (
-    <div className="users">
-      <div className="list">
-        <div className="utp">
-          <h3>MEL-MIS Users</h3>
-          {props.role !== "Regular User" && props.role !== "Guest" && <p
-            onClick={() => {
-              setClicked(true);
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ p: 2, mb: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 1,
+          }}
+        >
+          <Typography
+            variant="h6"
+            sx={{ mb: 1, color: "primary.light", fontWeight: 600 }}
+          >
+            MEL-MIS Users
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              mb: 1,
             }}
           >
-            <FontAwesomeIcon className="fa-add" icon={faUserPlus} /> New User
-          </p>}
-          <div className="search">
-            <input
-              type="text"
-              name="search"
-              id="search"
+            <TextField
+              size="small"
+              variant="outlined"
               placeholder="Name..."
               onChange={(e) => {
                 const v = e.target.value;
@@ -117,69 +143,94 @@ export default function PortalUsers(props) {
                   setRefresh(!refresh);
                 }
               }}
+              sx={{ width: 250 }}
+              InputProps={{
+                endAdornment: (
+                  <IconButton size="small">
+                    <FontAwesomeIcon icon={faSearch} />
+                  </IconButton>
+                ),
+              }}
             />
-            <FontAwesomeIcon className="fa-search" icon={faSearch} />
-          </div>
-        </div>
-        <hr />
 
-        <div className="div31">
-          <div>
-            <div className="lcontainer">
-              <div className="user-list">
-                {data &&
-                  data?.data?.length > 0 &&
-                  data?.data?.map((item, index) => {
-                    return (
-                      <UserBox
-                        key={index}
-                        item={item}
-                        userID={userID}
-                        setUserID={setUserID}
-                        selected={isMobile ? selected : null}
-                      />
-                    );
-                  })}
-              </div>
-            </div>
-            {data && (
-              <Pagination
-                totalItems={data?.total}
-                currentPage={offset}
-                onPageChange={(v) => {
-                  setOffset(v);
+            {props.role !== "Regular User" && props.role !== "Guest" && (
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<FontAwesomeIcon icon={faUserPlus} />}
+                onClick={() => setClicked(true)}
+                sx={{
+                  ml: 2,
+                  backgroundColor: "secondary",
+                  color: "#fff",
+                  "&:hover": { backgroundColor: "secondary.dark" },
                 }}
-              />
+              >
+                New User
+              </Button>
             )}
-          </div>
+          </Box>
+        </Box>
 
-          <div ref={selected}>
-            <div className="selected">
-              <h4>User Details</h4>
-              <hr />
-
-              {userDetails ? (
-                userDetails && (
-                  <SelectedUser
-                    setLoading={setLoading}
-                    userDetails={userDetails}
-                    setRefresh={setRefresh}
-                    refresh={refresh}
-                    url="auth"
-                    role={props.role}
+        <Divider sx={{ mb: 2 }} />
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 8 }}>
+            <Box sx={{ minHeight: 400 }}>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                {data && data?.data?.length > 0 ? (
+                  data?.data?.map((item, index) => (
+                    <UserBox
+                      key={index}
+                      item={item}
+                      userID={userID}
+                      setUserID={setUserID}
+                      selected={isMobile ? selected : null}
+                    />
+                  ))
+                ) : (
+                  <Typography variant="body2" color="text.secondary">
+                    No users found.
+                  </Typography>
+                )}
+              </Box>
+              {data && (
+                <Box sx={{ mt: 2 }}>
+                  <Pagination
+                    totalItems={data?.total}
+                    currentPage={offset}
+                    onPageChange={(v) => {
+                      setOffset(v);
+                    }}
                   />
-                )
-              ) : (
-                <>
-                  <p>Click on a user to see their details</p>
-                </>
+                </Box>
               )}
-            </div>
-          </div>
-        </div>
-
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Paper sx={{ p: 2, minHeight: 400 }} ref={selected}>
+              <Typography variant="h6" fontWeight={600} gutterBottom>
+                User Details
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              {userDetails ? (
+                <SelectedUser
+                  setLoading={setLoading}
+                  userDetails={userDetails}
+                  setRefresh={setRefresh}
+                  refresh={refresh}
+                  url="auth"
+                  role={props.role}
+                />
+              ) : (
+                <Typography variant="body2" color="text.secondary">
+                  Click on a user to see their details
+                </Typography>
+              )}
+            </Paper>
+          </Grid>
+        </Grid>
         {loading && <Loading />}
-      </div>
+      </Paper>
       {clicked && (
         <Popup
           setClicked={setClicked}
@@ -187,7 +238,7 @@ export default function PortalUsers(props) {
           refresh={refresh}
         />
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -211,7 +262,6 @@ const Popup = (props) => {
     "Stakeholder",
     "Field Officer",
   ];
-
   const cnty = [
     "",
     "Bungoma",
@@ -350,67 +400,178 @@ const Popup = (props) => {
   };
 
   return (
-    <div className="popup">
-      <div className="wrap">
-        <div className="head">
-          <h3>New User</h3>
-          <FontAwesomeIcon
-            onClick={() => {
-              props.setClicked(false);
-            }}
-            className="fa-times"
-            icon={faTimes}
-          />
-        </div>
-
-        <hr />
-        <div className="new">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <div className="div2equal">
-              <Input ref={fname} type="text" label="First Name *" />
-              <Input ref={sname} type="text" label="Surname *" />
-            </div>
-            <div className="div2equal">
-              <Input ref={email} type="email" label="Email *" />
-              <Input ref={phone} type="number" label="Phone *" />
-            </div>
-
-            <div className="div2equal">
-              <Select ref={position} data={pos} label="Position *" />
-              <Select ref={county} data={cnty} label="County *" />
-            </div>
-
-            <div className="div2equal">
-              <Select
-                ref={level}
-                data={["", "Full Access", "Dashboard", "Mobile"]}
+    <Dialog
+      open
+      onClose={() => props.setClicked(false)}
+      maxWidth="sm"
+      fullWidth
+    >
+      <DialogTitle
+        sx={{ color: "primary.light", fontWeight: 600 }}
+      >
+        New User
+      </DialogTitle>
+      <Divider />
+      <DialogContent>
+        <Box
+          component="form"
+          onSubmit={(e) => e.preventDefault()}
+          sx={{ mt: 1 }}
+        >
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={fname}
+                label="First Name *"
+                fullWidth
+                required
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={sname}
+                label="Surname *"
+                fullWidth
+                required
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={email}
+                label="Email *"
+                type="email"
+                fullWidth
+                required
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={phone}
+                label="Phone *"
+                type="number"
+                fullWidth
+                required
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={position}
+                label="Position *"
+                select
+                fullWidth
+                required
+                size="small"
+                defaultValue=""
+              >
+                {pos.map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={county}
+                label="County *"
+                select
+                fullWidth
+                required
+                size="small"
+                defaultValue=""
+              >
+                {cnty.map((option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={level}
                 label="Level *"
-              />
-              <Select
-                ref={role}
-                data={["", "Regular User", "Guest", "Admin", "Data Collector"]}
+                select
+                fullWidth
+                required
+                size="small"
+                defaultValue=""
+              >
+                {["", "Full Access", "Dashboard", "Mobile"].map(
+                  (option, idx) => (
+                    <MenuItem key={idx} value={option}>
+                      {option}
+                    </MenuItem>
+                  )
+                )}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={role}
                 label="Role *"
-              />
-            </div>
-
-            <div className="div2equal">
-              <Input ref={password} type="password" label="Password *" />
-              <Input
-                ref={cpassword}
+                select
+                fullWidth
+                required
+                size="small"
+                defaultValue=""
+              >
+                {["", "Regular User", "Guest", "Admin", "Data Collector"].map(
+                  (option, idx) => (
+                    <MenuItem key={idx} value={option}>
+                      {option}
+                    </MenuItem>
+                  )
+                )}
+              </TextField>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={password}
+                label="Password *"
                 type="password"
-                label="Confirm Password *"
+                fullWidth
+                required
+                size="small"
               />
-            </div>
-            <h6>{error}</h6>
-            <Button handleClick={createUser} value="Submit" />
-          </form>
-          {loading && <Loading />}
-        </div>
-      </div>
-    </div>
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
+                inputRef={cpassword}
+                label="Confirm Password *"
+                type="password"
+                fullWidth
+                required
+                size="small"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {error && (
+                <Typography color="error" variant="body2">
+                  {error}
+                </Typography>
+              )}
+            </Grid>
+          </Grid>
+        </Box>
+        {loading && (
+          <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+            <CircularProgress />
+          </Box>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => props.setClicked(false)} color="inherit">
+          Cancel
+        </Button>
+        <Button onClick={createUser} variant="contained" color="secondary">
+          Submit
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

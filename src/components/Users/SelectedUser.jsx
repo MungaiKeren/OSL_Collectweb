@@ -10,6 +10,18 @@ import Input from "../Util/Input";
 import Select from "../Util/Select";
 import Loading from "../Util/Loading";
 import { Paper, Typography, Stack, Button, useTheme } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Grid,
+  TextField,
+  MenuItem,
+  Button as MUIButton,
+  CircularProgress,
+  Divider,
+} from "@mui/material";
 
 function formatDate(inputDate) {
   const date = new Date(inputDate);
@@ -210,6 +222,7 @@ const UpdatePopUp = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [data, setData] = useState("");
+  const theme = useTheme();
 
   useEffect(() => {
     fetch(`/api/auth/${props?.userId}`)
@@ -218,11 +231,10 @@ const UpdatePopUp = (props) => {
         else throw Error("");
       })
       .then((data) => {
-        console.log(data);
         setData(data);
       })
       .catch((err) => {
-        console.log(err);
+        // handle error
       });
   }, []);
 
@@ -243,7 +255,6 @@ const UpdatePopUp = (props) => {
     "Stakeholder",
     "Field Officer",
   ];
-
   const cnty = [
     "",
     "Bungoma",
@@ -310,7 +321,6 @@ const UpdatePopUp = (props) => {
         setLoading(false);
         return result;
       }
-
       return result;
     };
 
@@ -352,96 +362,158 @@ const UpdatePopUp = (props) => {
     return String(email)
       .toLowerCase()
       .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
 
   return (
-    <div className="popup">
-      <div className="wrap">
-        <div className="head">
-          <h3>Update User Details</h3>
-          <FontAwesomeIcon
-            onClick={() => {
-              props.setClicked(false);
-            }}
-            className="fa-times"
-            icon={faTimes}
-          />
-        </div>
-
-        <hr />
-        <div className="new">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <div className="div2equal">
-              <Input
-                ref={fname}
-                type="text"
-                label="First Name *"
-                value={data?.Name?.split(" ")[0]}
-              />
-              <Input
-                ref={sname}
-                type="text"
-                label="Surname *"
-                value={data?.Name?.split(" ").slice(1).join(" ")}
-              />
-            </div>
-            <div className="div2equal">
-              <Input
-                ref={email}
-                type="email"
-                label="Email *"
-                value={data?.Email}
-              />
-              <Input
-                ref={phone}
-                type="number"
-                label="Phone *"
-                value={data?.Phone}
-              />
-            </div>
-
-            <div className="div2equal">
-              <Select
-                ref={position}
-                data={pos}
-                label="Position *"
-                value={data?.Position}
-              />
-              <Select
-                ref={county}
-                data={cnty}
-                label="County *"
-                value={data?.County}
-              />
-            </div>
-
-            <div className="div2equal">
-              <Select
-                ref={level}
-                data={["", "Full Access", "Dashboard", "Mobile"]}
-                label="Level *"
-                value={data?.Level}
-              />
-              <Select
-                ref={role}
-                data={["", "Regular User", "Guest", "Admin", "Data Collector"]}
-                label="Role *"
-                value={data?.Role}
-              />
-            </div>
-
-            <h6>{error}</h6>
-            <Button handleClick={UpdateUser} value="Submit" />
-          </form>
-          {loading && <Loading />}
-        </div>
-      </div>
-    </div>
+    <Dialog
+      open
+      onClose={() => props.setClicked(false)}
+      maxWidth="sm"
+      fullWidth
+    >
+      <DialogTitle sx={{ color: theme.palette.primary.light, fontWeight: 600 }}>
+        Update User Details
+      </DialogTitle>
+      <Divider />
+      <DialogContent>
+        <Grid container spacing={2} sx={{ mt: 1 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              inputRef={fname}
+              label="First Name *"
+              fullWidth
+              required
+              size="small"
+              defaultValue={data?.Name?.split(" ")[0] || ""}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              inputRef={sname}
+              label="Surname *"
+              fullWidth
+              required
+              size="small"
+              defaultValue={data?.Name?.split(" ").slice(1).join(" ") || ""}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              inputRef={email}
+              label="Email *"
+              type="email"
+              fullWidth
+              required
+              size="small"
+              defaultValue={data?.Email || ""}
+              disabled
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              inputRef={phone}
+              label="Phone *"
+              type="number"
+              fullWidth
+              required
+              size="small"
+              defaultValue={data?.Phone || ""}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              inputRef={position}
+              label="Position *"
+              select
+              fullWidth
+              required
+              size="small"
+              defaultValue={data?.Position || ""}
+            >
+              {pos.map((option, idx) => (
+                <MenuItem key={idx} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              inputRef={county}
+              label="County *"
+              select
+              fullWidth
+              required
+              size="small"
+              defaultValue={data?.County || ""}
+            >
+              {cnty.map((option, idx) => (
+                <MenuItem key={idx} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              inputRef={level}
+              label="Level *"
+              select
+              fullWidth
+              required
+              size="small"
+              defaultValue={data?.Level || ""}
+            >
+              {["", "Full Access", "Dashboard", "Mobile"].map((option, idx) => (
+                <MenuItem key={idx} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <TextField
+              inputRef={role}
+              label="Role *"
+              select
+              fullWidth
+              required
+              size="small"
+              defaultValue={data?.Role || ""}
+            >
+              {["", "Regular User", "Guest", "Admin", "Data Collector"].map(
+                (option, idx) => (
+                  <MenuItem key={idx} value={option}>
+                    {option}
+                  </MenuItem>
+                )
+              )}
+            </TextField>
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            {error && (
+              <Typography color="error" variant="body2">
+                {error}
+              </Typography>
+            )}
+          </Grid>
+        </Grid>
+        {loading && (
+          <Grid container justifyContent="center" sx={{ mt: 2 }}>
+            <CircularProgress />
+          </Grid>
+        )}
+      </DialogContent>
+      <DialogActions>
+        <MUIButton onClick={() => props.setClicked(false)} color="inherit">
+          Cancel
+        </MUIButton>
+        <MUIButton onClick={UpdateUser} variant="contained" color="secondary">
+          Submit
+        </MUIButton>
+      </DialogActions>
+    </Dialog>
   );
 };

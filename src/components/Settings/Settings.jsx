@@ -116,7 +116,7 @@ export default function Settings() {
     <Box sx={{ p: { xs: 2, sm: 3 } }}>
       <Paper elevation={0} sx={{ p: { xs: 2, sm: 3 }, mb: 4, borderRadius: 2 }}>
         <Typography
-          variant="h5"
+          variant="h6"
           sx={{ mb: 2, color: "primary.main", fontWeight: 600 }}
         >
           User Details
@@ -136,7 +136,7 @@ export default function Settings() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ color: theme.palette.primary.main, fontWeight: 600 }}
+                    sx={{ color: theme.palette.grey[400], fontWeight: 600 }}
                   >
                     {value}
                   </Typography>
@@ -153,7 +153,7 @@ export default function Settings() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ color: theme.palette.primary.main, fontWeight: 600 }}
+                    sx={{ color: theme.palette.grey[400], fontWeight: 600 }}
                   >
                     {convertTime(currentUser.iat).split("GMT")[0]}
                   </Typography>
@@ -170,7 +170,7 @@ export default function Settings() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ color: theme.palette.primary.main, fontWeight: 600 }}
+                    sx={{ color: theme.palette.grey[400], fontWeight: 600 }}
                   >
                     {convertTime(currentUser.exp).split("GMT")[0]}
                   </Typography>
@@ -189,7 +189,7 @@ export default function Settings() {
 
       <Paper elevation={0} sx={{ p: { xs: 2, sm: 3 }, borderRadius: 2 }}>
         <Typography
-          variant="h5"
+          variant="h6"
           sx={{ mb: 2, color: "primary.main", fontWeight: 600 }}
         >
           Change Password
@@ -288,7 +288,7 @@ export default function Settings() {
 
           <Button
             variant="contained"
-            color="primary"
+            color="secondary"
             size="large"
             onClick={changePassword}
             sx={{
@@ -298,6 +298,8 @@ export default function Settings() {
               borderRadius: 2,
               textTransform: "none",
               fontWeight: 600,
+              backgroundColor: "secondary",
+              color: "#fff"
             }}
           >
             Change Password

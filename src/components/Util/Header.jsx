@@ -75,7 +75,6 @@ export default function Header(props) {
             edge="start"
             color="inherit"
             aria-label="user"
-            sx={{ mr: 2 }}
           >
             <FontAwesomeIcon icon={faUserCircle} />
           </IconButton>

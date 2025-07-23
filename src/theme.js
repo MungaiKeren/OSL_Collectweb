@@ -13,7 +13,7 @@ const theme = createTheme({
       dark: "#c43d00",
     },
     accent: {
-      main: "#ffb400",
+      main: "#C38154",
       light: "#ffe082",
       dark: "#b28704",
     },

@@ -1,8 +1,10 @@
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
+import { Box, IconButton, Button, useTheme } from "@mui/material";
 
 const Pagination = ({ totalItems, currentPage, onPageChange }) => {
+  const theme = useTheme();
   var totalPages = Math.floor(totalItems / 12);
   if (totalPages == 0) {
     totalPages = 1;
@@ -26,76 +28,118 @@ const Pagination = ({ totalItems, currentPage, onPageChange }) => {
   };
 
   return (
-    <div className="cpagination">
-      <FontAwesomeIcon
-        icon={faArrowLeft}
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1,
+        mt: 2,
+        flexWrap: "wrap",
+        textAlign: "center",
+        justifyContent: "center"
+      }}
+    >
+      <IconButton
         onClick={() => {
           if (currentPage + 1 > 1) {
             onPageChange(currentPage - 1);
           }
         }}
-        className="fa fa-arrow-left"
-      />
+        color="primary"
+        disabled={currentPage === 0}
+        size="small"
+        sx={{ border: `1px solid ${theme.palette.grey[300]}` }}
+      >
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </IconButton>
       {currentPage > 5 && (
-        <h5
-          onClick={() => {
-            handlePageChange(0);
-          }}
+        <Button
+          onClick={() => handlePageChange(0)}
+          variant="outlined"
+          color="secondary"
+          size="small"
         >
-          {1}
-        </h5>
+          1
+        </Button>
       )}
       {currentPage + 1 > 5 && (
-        <h5
+        <Button
           onClick={() => {
             if (currentPage + 1 > 5) {
               onPageChange(currentPage + 1 - 5);
             }
           }}
+          variant="text"
+          color="secondary"
+          size="small"
+          sx={{ minWidth: 32 }}
         >
           ...
-        </h5>
+        </Button>
       )}
       {pageNumbers.map((pageNumber) => (
-        <h5
+        <Button
           key={pageNumber}
           onClick={() => handlePageChange(pageNumber - 1)}
-          className={`page-item ${
-            pageNumber === currentPage + 1 ? "active" : ""
-          }`}
+          variant={pageNumber === currentPage + 1 ? "contained" : "outlined"}
+          color={pageNumber === currentPage + 1 ? "secondary" : "primary"}
+          size="small"
+          sx={{
+            fontWeight: pageNumber === currentPage + 1 ? 700 : 400,
+            minWidth: 32,
+            background:
+              pageNumber === currentPage + 1
+                ? theme.palette.secondary.main
+                : undefined,
+            color:
+              pageNumber === currentPage + 1
+                ? theme.palette.background.paper
+                : undefined,
+            borderColor: theme.palette.grey[300],
+          }}
         >
           {pageNumber}
-        </h5>
+        </Button>
       ))}
       {pageNumbers.length === 5 && (
-        <h5
+        <Button
           onClick={() => {
             if (currentPage + 1 < totalPages - 5) {
               onPageChange(currentPage + 5);
             }
           }}
+          variant="text"
+          color="secondary"
+          size="small"
+          sx={{ minWidth: 32 }}
         >
           ...
-        </h5>
+        </Button>
       )}
       {pageNumbers.length === 5 && (
-        <h5
-          onClick={() => {
-            handlePageChange(totalPages);
-          }}
+        <Button
+          onClick={() => handlePageChange(totalPages)}
+          variant="outlined"
+          color="secondary"
+          size="small"
         >
           {totalPages}
-        </h5>
+        </Button>
       )}
-      <FontAwesomeIcon
-        icon={faArrowRight}
+      <IconButton
         onClick={() => {
           if (currentPage + 1 < totalPages) {
             onPageChange(currentPage + 1);
           }
         }}
-      />
-    </div>
+        color="primary"
+        disabled={currentPage + 1 >= totalPages}
+        size="small"
+        sx={{ border: `1px solid ${theme.palette.grey[300]}` }}
+      >
+        <FontAwesomeIcon icon={faArrowRight} />
+      </IconButton>
+    </Box>
   );
 };
 
